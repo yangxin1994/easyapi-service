@@ -1,17 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import mutations from './mutations'
-import actions from './actions'
+import Vue from "vue";
+import Vuex from "vuex";
+import mutations from "./mutations";
+import actions from "./actions";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const state = {
   // 账号信息
-  'accountInfo': {}
-}
+  accountInfo: {}
+};
 
 export default new Vuex.Store({
   state,
   actions,
   mutations
-})
+});
