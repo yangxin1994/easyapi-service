@@ -33,32 +33,32 @@
   </div>
 </template>
 <script>
-  import {getUserService, whiteList, modify} from "../api/api"
-  import Cookies from 'js-cookie'
+  import { getUserService, whiteList, modify } from "../api/api";
+  import Cookies from "js-cookie";
 
   export default {
     data() {
       return {
-        serverIds: '',//服务的id逗号隔开字符串
-        value: '',
-        IpWhiteListData: '',
+        serverIds: "",//服务的id逗号隔开字符串
+        value: "",
+        IpWhiteListData: "",
         indeterminate: false,
         checkAll: false,
         checkAllGroup: [],
         CheckboxData: [],
-        authenticationToken: '',
-      }
+        authenticationToken: ""
+      };
     },
     methods: {
       handleCheckAll() {
         this.checkAll = true;
         this.checkAllGroup = [];
         for (let i = 0; i < this.CheckboxData.length; i++) {
-          this.checkAllGroup.push(this.CheckboxData[i].service.serviceId)
+          this.checkAllGroup.push(this.CheckboxData[i].service.serviceId);
         }
       },
       handleCheckAll1() {
-        this.checkAllGroup = []
+        this.checkAllGroup = [];
       },
       checkAllGroupChange(data) {
         if (data.length === this.CheckboxData.length) {
@@ -75,78 +75,75 @@
       //获取我的服务
       getMyServe() {
         this.$ajax({
-          method: 'get',
+          method: "get",
           url: getUserService,
           params: {
-            size: 100,
+            size: 100
           },
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           }
         }).then(res => {
           this.CheckboxData = res.data.content;
         }).catch(error => {
-          console.log(error)
-          this.$Message.error(error.body.message)
-        })
+          console.log(error);
+          this.$Message.error(error.body.message);
+        });
       },
       //获取白名单
       getWhiteList() {
         this.$ajax({
           url: whiteList,
-          method: 'get',
+          method: "get",
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           }
         }).then(res => {
           this.IpWhiteListData = res.data.content.ips;
-          this.serverIds = res.data.content.whiteListId
+          this.serverIds = res.data.content.whiteListId;
           let serviceIdsData = res.data.content.serviceIds.split(",");
           for (let i = 0; i < serviceIdsData.length; i++) {
-            serviceIdsData[i] = Number(serviceIdsData[i])
+            serviceIdsData[i] = Number(serviceIdsData[i]);
           }
           this.checkAllGroup = serviceIdsData;
         }).catch(error => {
-          console.log(error)
+          console.log(error);
           // this.$Message.error(error.body.message)
-        })
+        });
       },
       //修改白名单
       modifyWhiteList() {
-        let obj = {}
+        let obj = {};
         obj.id = this.serverIds;
         obj.serviceIds = this.checkAllGroup.join(",");
         obj.ips = this.IpWhiteListData;
         this.$ajax({
           url: modify,
-          method: 'put',
+          method: "put",
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
-          data: obj,
+          data: obj
         }).then(res => {
-          this.$Message.success(res.data.message)
+          this.$Message.success(res.data.message);
           this.getMyServe();
           this.getWhiteList();
         }).catch(error => {
-          console.log(error)
-          this.$Message.error(error.data.message)
-        })
+          console.log(error);
+          this.$Message.error(error.data.message);
+        });
       }
     },
     created() {
-      this.authenticationToken = 'Bearer ' + Cookies.get("authenticationToken")
-      console.log(this.authenticationToken)
+      this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
     },
     mounted() {
-      document.title = 'IP白名单 - EasyAPI'
-      //获取我的服务
+      document.title = "IP白名单 - EasyAPI";
       this.getMyServe();
-      //获取ip白名单
       this.getWhiteList();
     }
-  }
+  };
 </script>
 <style>
   .inpuit .ivu-input {

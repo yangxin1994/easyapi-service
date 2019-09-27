@@ -269,101 +269,101 @@
 </template>
 
 <script>
-  import {getUserService, Surplus, Reminding, memberList, modifyBalance, addMembers} from "../api/api"
-  import Clipboard from 'clipboard';
-  import Cookies from 'js-cookie'
+  import { getUserService, Surplus, Reminding, memberList, modifyBalance, addMembers } from "../api/api";
+  import Clipboard from "clipboard";
+  import Cookies from "js-cookie";
 
   export default {
     data() {
       return {
-        defaultMemberImg: '',
-        defaultMemberNickname: '',
-        defaultMemberType: '',
-        tipsMember: '',
-        authenticationToken: '',
-        teamInformation: '',
-        startTime: '',
-        currentTime: '',
+        defaultMemberImg: "",
+        defaultMemberNickname: "",
+        defaultMemberType: "",
+        tipsMember: "",
+        authenticationToken: "",
+        teamInformation: "",
+        startTime: "",
+        currentTime: "",
         Close: false,
-        btnContent: '显示',
-        assignment: '秘钥管理',
+        btnContent: "显示",
+        assignment: "秘钥管理",
         inputType: "password",
-        switch1: '',//提醒开关
-        tsID: '',
+        switch1: "",//提醒开关
+        tsID: "",
         nowIndex: 0,
         isShow: false,
         changeKeyHint: false,
         serveType: null,
-        balance: '',
-        serviceId: '',
-        type: '',
+        balance: "",
+        serviceId: "",
+        type: "",
         checkbox: [],
-        member: '',
+        member: "",
         balanceWarnNo: null,
-        judgmentUnit: '',
-        notAdded: '',
+        judgmentUnit: "",
+        notAdded: "",
         frame: false,
         Dmember: false,
-        nickname: '',
-        userId: '',
+        nickname: "",
+        userId: "",
         show: false,
-        code: '',
-        MemberId: '',
-        category: '',
-        titleSubscript: '',
-        selectedPersonnel: '',
-        teamId: '',
-        name: '',
-        remainDay: '',
+        code: "",
+        MemberId: "",
+        category: "",
+        titleSubscript: "",
+        selectedPersonnel: "",
+        teamId: "",
+        name: "",
+        remainDay: "",
         formValidate: {
-          appKey: '',
-          appSecret: '',
+          appKey: "",
+          appSecret: ""
         },
         ruleValidate: {
           appKey: [
-            {required: true, message: '请输入appKey，且不能为空', trigger: 'blur'}
+            { required: true, message: "请输入appKey，且不能为空", trigger: "blur" }
           ],
           appSecret: [
-            {required: true, message: '请输入appSecret，且不能为空', trigger: 'blur'}
+            { required: true, message: "请输入appSecret，且不能为空", trigger: "blur" }
           ]
-        },
-      }
+        }
+      };
     },
     methods: {
       //点击复制
       copyappKey() {
-        var clipboard = new Clipboard('.copy')
-        clipboard.on('success', e => {
-          this.$Message.success('复制成功');
+        var clipboard = new Clipboard(".copy");
+        clipboard.on("success", e => {
+          this.$Message.success("复制成功");
           // 释放内存
-          clipboard.destroy()
-        })
-        clipboard.on('error', e => {
+          clipboard.destroy();
+        });
+        clipboard.on("error", e => {
           // 不支持复制
-          this.$Message.error('该浏览器不支持自动复制');
+          this.$Message.error("该浏览器不支持自动复制");
           // 释放内存
-          clipboard.destroy()
-        })
+          clipboard.destroy();
+        });
       },
       copyappSecret() {
-        var clipboard = new Clipboard('.copy')
-        console.log(clipboard)
-        clipboard.on('success', e => {
-          this.$Message.success('复制成功');
+        var clipboard = new Clipboard(".copy");
+        console.log(clipboard);
+        clipboard.on("success", e => {
+          this.$Message.success("复制成功");
           // 释放内存
-          clipboard.destroy()
-        })
-        clipboard.on('error', e => {
+          clipboard.destroy();
+        });
+        clipboard.on("error", e => {
           // 不支持复制
-          this.$Message.error('该浏览器不支持自动复制');
+          this.$Message.error("该浏览器不支持自动复制");
           // 释放内存
-          clipboard.destroy()
-        })
+          clipboard.destroy();
+        });
       },
 
       //显示未添加成员
       displayAdd() {
-        this.show = true
+        this.show = true;
       },
       change(status) {
         if (status) {
@@ -380,88 +380,88 @@
         this.Close = true;
         this.tsID = teamServiceId;
         this.serviceId = serviceId;
-        this.type = type
+        this.type = type;
         this.assignment = name;
         this.nowIndex = index;
         // console.log(index)
-        this.secretKey()
+        this.secretKey();
         this.teamId = teamId;
-        this.remindingOfTheBalance()
-        this.getMemberList()
-        this.getNmaeList()
+        this.remindingOfTheBalance();
+        this.getMemberList();
+        this.getNmaeList();
         this.membersNotJoined();
         this.promptingStaff();
       },
       showInputData() {
         if (this.inputType === "password") {
-          this.inputType = 'text';
-          this.btnContent = "隐藏"
+          this.inputType = "text";
+          this.btnContent = "隐藏";
         } else {
-          this.inputType = 'password';
-          this.btnContent = "显示"
+          this.inputType = "password";
+          this.btnContent = "显示";
         }
       },
 
       //跳转到白名单页面
       jumpPage() {
-        this.$router.push({path: "/white-list"})
+        this.$router.push({ path: "/white-list" });
       },
       jumpPagea(URL, hasConsole, serviceId) {
         if (hasConsole === true) {
-          window.location.href = 'https://' + URL + '.easyapi.com/console/'
+          window.location.href = "https://" + URL + ".easyapi.com/console/";
         } else {
-          this.$router.push({path: "/stat", query: {serviceId: serviceId}})
+          this.$router.push({ path: "/stat", query: { serviceId: serviceId } });
         }
       },
       //次数续费
       renewalPage(serviceId, teamServiceId) {
-        this.$router.push({path: "/renew/count", query: {serviceId: serviceId, teamServiceId: teamServiceId}})
+        this.$router.push({ path: "/renew/count", query: { serviceId: serviceId, teamServiceId: teamServiceId } });
       },
       //按月续费
       monthlyPage(serviceId, teamServiceId) {
-        this.$router.push({path: "/renew/monthly", query: {serviceId: serviceId, teamServiceId: teamServiceId}})
+        this.$router.push({ path: "/renew/monthly", query: { serviceId: serviceId, teamServiceId: teamServiceId } });
       },
       //服务列表
       colorSwitching(category) {
         this.category = category;
-        this.getUserServices()
+        this.getUserServices();
       },
       getUserServices() {
         this.$ajax({
-          method: 'GET',
+          method: "GET",
           url: getUserService,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
           params: {
             serviceCategory: this.category,
-            size: 50,
+            size: 50
           }
         }).then(res => {
           this.teamInformation = res.data.content;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //获取秘钥信息
       secretKey() {
         this.$ajax({
-          method: 'get',
+          method: "get",
           url: Surplus + "/" + this.tsID,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           }
         }).then(res => {
           this.formValidate.appKey = res.data.appKey;
           this.formValidate.appSecret = res.data.appSecret;
-          this.remainDay = res.data.remainDay
-          this.balance = res.data.balance
-          this.judgmentUnit = res.data.service.type
+          this.remainDay = res.data.remainDay;
+          this.balance = res.data.balance;
+          this.judgmentUnit = res.data.service.type;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //修改秘钥
       modificationKey() {
@@ -471,22 +471,22 @@
         let obj = {};
         obj.id = this.tsID;
         this.$ajax({
-          method: 'put',
+          method: "put",
           url: Surplus,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
           data: JSON.stringify(obj)
         }).then(res => {
           this.formValidate.appKey = res.data.content.appKey;
           this.formValidate.appSecret = res.data.content.appSecret;
-          this.secretKey()
+          this.secretKey();
           this.$Message.success(res.data.message);
         }).catch(error => {
-          console.log(error)
+          console.log(error);
           this.$Message.error(error.data.message);
-        })
+        });
       },
       cancel() {
 
@@ -494,156 +494,156 @@
       //余额提醒上限
       remindingOfTheBalance() {
         this.$ajax({
-          method: 'GET',
+          method: "GET",
           url: Reminding + "/" + this.serviceId,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded"
           }
         }).then(res => {
           if (res.data.code === 0) {
             // this.$Message.error("余额提醒上限暂无数据");
             this.switch1 = false;
           } else {
-            this.switch1 = true
+            this.switch1 = true;
             this.balanceWarnNo = res.data.content.count;
           }
         }).catch(error => {
-          console.log(error)
+          console.log(error);
           if (error.data.code === -1) {
             this.$Message.warning(error.data.message);
           } else {
             this.$Message.error("数据错误");
           }
-        })
+        });
       },
       //修改余额提醒设置
       reviseTheBalance() {
-        let remindUserIds = this.checkbox.join(",")
+        let remindUserIds = this.checkbox.join(",");
         this.$ajax({
-          method: 'PUT',
+          method: "PUT",
           url: modifyBalance,
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
           params: {
             remindUserIds: remindUserIds,
             ifRemind: this.switch1,
             serviceId: this.serviceId,
-            count: this.balanceWarnNo,
-          },
+            count: this.balanceWarnNo
+          }
         }).then(res => {
-          this.$Message.success(res.data.message)
+          this.$Message.success(res.data.message);
         }).catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
       },
 
       //提示人员
       promptingStaff() {
         this.$ajax({
-          method: 'GET',
+          method: "GET",
           url: modifyBalance,
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
           params: {
             serviceId: this.serviceId
           }
         }).then(res => {
           this.selectedPersonnel = res.data.content;
-          let code = res.data.code
+          let code = res.data.code;
           if (code !== 0) {
             for (let i = 0; i < this.selectedPersonnel.length; i++) {
-              this.checkbox[i] = this.selectedPersonnel[i].remindUser.id
+              this.checkbox[i] = this.selectedPersonnel[i].remindUser.id;
             }
           }
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //获取服务的成员列表
       getMemberList() {
         this.$ajax({
-          method: 'GET',
+          method: "GET",
           url: memberList + "/" + this.serviceId + "/users",
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
           params: {
-            size: 100,
+            size: 100
           }
         }).then(res => {
-          this.member = res.data.content
-          this.defaultMemberImg = res.data.content[0].user.photo
-          this.defaultMemberNickname = res.data.content[0].user.nickname
-          this.defaultMemberType = res.data.content[0].type
+          this.member = res.data.content;
+          this.defaultMemberImg = res.data.content[0].user.photo;
+          this.defaultMemberNickname = res.data.content[0].user.nickname;
+          this.defaultMemberType = res.data.content[0].type;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //余额提醒成员列表
       getNmaeList() {
         this.$ajax({
-          method: 'GET',
+          method: "GET",
           url: memberList + "/" + this.serviceId + "/users",
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
           params: {
             size: 100,
-            types: '创建人,管理员',
+            types: "创建人,管理员"
           }
         }).then(res => {
-          this.tipsMember = res.data.content
+          this.tipsMember = res.data.content;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //未加入服务的成员列表
       membersNotJoined() {
         this.$ajax({
-          method: 'get',
+          method: "get",
           url: memberList + "/" + this.serviceId + "/unJoinUsers",
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           }
         }).then(res => {
-          this.notAdded = res.data
+          this.notAdded = res.data;
           this.code = res.data.code;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //添加成员
       projectile(nickname, id) {
-        this.frame = true
-        this.nickname = nickname
-        this.userId = id
+        this.frame = true;
+        this.nickname = nickname;
+        this.userId = id;
       },
       //添加成员
       Sure() {
         this.$ajax({
-          method: 'POST',
+          method: "POST",
           url: addMembers,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
           params: {
             userId: this.userId,
             serviceId: this.serviceId,
-            teamServiceId: this.teamServiceId,
+            teamServiceId: this.teamServiceId
           }
         }).then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
+          this.$Message.success(res.data.message);
+          this.getMemberList();
+          this.membersNotJoined();
         }).catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
       },
       //删除成员
       deleteMember(id) {
@@ -652,43 +652,43 @@
       },
       prompt() {
         this.$ajax({
-          method: 'DELETE',
+          method: "DELETE",
           url: addMembers + "/" + this.MemberId,
           headers: {
-            "authorization": this.authenticationToken,
-          },
+            "authorization": this.authenticationToken
+          }
         }).then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
+          this.$Message.success(res.data.message);
+          this.getMemberList();
+          this.membersNotJoined();
         }).catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
       },
       //续费跳转页面
       renew() {
         if (this.type == 3) {
-          this.$router.push({path: "/renew/monthly", query: {serviceId: this.serviceId, teamServiceId: this.tsID}})
+          this.$router.push({ path: "/renew/monthly", query: { serviceId: this.serviceId, teamServiceId: this.tsID } });
         }
         if (this.type == 2 || this.type == 1 || this.type == 4) {
-          this.$router.push({path: "/renew/count", query: {serviceId: this.serviceId, teamServiceId: this.tsID}})
+          this.$router.push({ path: "/renew/count", query: { serviceId: this.serviceId, teamServiceId: this.tsID } });
         }
-      },
+      }
     },
     created() {
       let that = this;
-      this.authenticationToken = 'Bearer ' + Cookies.get("authenticationToken")
+      this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
       this.name = this.$route.query.name;
-      setTimeout(function () {
+      setTimeout(function() {
         that.name = localStorage.getItem("name");
-      }, 1000)
+      }, 1000);
     },
     mounted() {
-      document.title = '服务中心 - EasyAPI'
-      this.getUserServices()
+      document.title = "服务中心 - EasyAPI";
+      this.getUserServices();
     }
-  }
+  };
 
 </script>
 <style>

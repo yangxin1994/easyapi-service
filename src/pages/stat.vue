@@ -32,49 +32,49 @@
 <script>
   // 导入chart组件
   var myvue = {};
-  import XChart from '../components/chart/highcharts'
-  import {interfaceStatistics, getUserService} from "../api/api"
-  import Cookies from 'js-cookie'
+  import XChart from "../components/chart/highcharts";
+  import { interfaceStatistics, getUserService } from "../api/api";
+  import Cookies from "js-cookie";
 
   export default {
     data() {
       return {
-        serviceId: '',
-        teamInformation: '',
-        Switching: '最近7天',
-        timeAndDate: '',
-        seriesData: '',
-        authenticationToken: '',
-        startDay: '',//开始时间
-        endDay: '',//截止时间
+        serviceId: "",
+        teamInformation: "",
+        Switching: "最近7天",
+        timeAndDate: "",
+        seriesData: "",
+        authenticationToken: "",
+        startDay: "",//开始时间
+        endDay: "",//截止时间
         dayArr: [],
-        statisticsTimes: '',
+        statisticsTimes: "",
         item: 7,
         option: {},
         data: [{
-          name: '',
-          data: [],
+          name: "",
+          data: []
         }],
         other: {
           title: {
             //标题
-            text: ''
+            text: ""
           },
           legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
+            layout: "vertical",
+            align: "right",
+            verticalAlign: "middle"
           },
           xAxis: {
             categories: [],
-            crosshair: true,
+            crosshair: true
           },
           yAxis: {
             title: {
-              text: '',
-            },
+              text: ""
+            }
           },
-          series: '',
+          series: "",
           responsive: {
             rules: [{
               condition: {
@@ -82,52 +82,52 @@
               },
               chartOptions: {
                 legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom'
+                  layout: "horizontal",
+                  align: "center",
+                  verticalAlign: "bottom"
                 }
               }
             }]
           },
           credits: {
             enabled: false // 去掉highcharts商标
-          },
-        },
-      }
+          }
+        }
+      };
     },
     methods: {
       stand(pay, data) {
         this.dayArr = [];
-        this.timeAndDate = '';
+        this.timeAndDate = "";
         this.Switching = pay;
-        this.item = data
-        this.getItem()
+        this.item = data;
+        this.getItem();
       },
       getItem() {
         for (let i = 0; i < this.item; i++) {
-          const ymd = new Date(new Date() - 24 * 60 * 60 * 1000 * i).toLocaleString().split(' ')[0]
-          const ymdarr = ymd.split('/')
+          const ymd = new Date(new Date() - 24 * 60 * 60 * 1000 * i).toLocaleString().split(" ")[0];
+          const ymdarr = ymd.split("/");
           if (ymdarr[1] * 1 < 10) {
-            ymdarr[1] = '0' + ymdarr[1]
+            ymdarr[1] = "0" + ymdarr[1];
           }
           if (ymdarr[2] * 1 < 10) {
-            ymdarr[2] = '0' + ymdarr[2]
+            ymdarr[2] = "0" + ymdarr[2];
           }
-          this.dayArr.unshift(ymdarr.join('-'))
+          this.dayArr.unshift(ymdarr.join("-"));
         }
-        this.startDay = this.dayArr[0]
-        let index = this.dayArr.length - 1
-        this.endDay = this.dayArr[index]
-        this.other.xAxis.categories = this.dayArr
-        this.getTimeAndDate()
+        this.startDay = this.dayArr[0];
+        let index = this.dayArr.length - 1;
+        this.endDay = this.dayArr[index];
+        this.other.xAxis.categories = this.dayArr;
+        this.getTimeAndDate();
       },
       //选择时间
       selectionDate(style, par) {
-        console.log(style)
+        console.log(style);
         this.Switching = style;
-        this.startDay = this.$moment(par[0]).format('YYYY-MM-DD')
-        this.endDay = this.$moment(par[1]).format('YYYY-MM-DD')
-        this.getBetweenDateStr()
+        this.startDay = this.$moment(par[0]).format("YYYY-MM-DD");
+        this.endDay = this.$moment(par[1]).format("YYYY-MM-DD");
+        this.getBetweenDateStr();
       },
       getBetweenDateStr() {
         this.dayArr = [];
@@ -147,11 +147,11 @@
           dateList[1] = diffDay.getMonth() + 1;
           dateList[0] = diffDay.getFullYear();
           if (String(dateList[1]).length == 1) {
-            dateList[1] = "0" + dateList[1]
+            dateList[1] = "0" + dateList[1];
           }
           ;
           if (String(dateList[2]).length == 1) {
-            dateList[2] = "0" + dateList[2]
+            dateList[2] = "0" + dateList[2];
           }
           ;
           this.dayArr.push(dateList[0] + "-" + dateList[1] + "-" + dateList[2]);
@@ -160,29 +160,29 @@
           }
         }
         ;
-        this.getTimeAndDate()
+        this.getTimeAndDate();
       },
       //接口统计
       getTimeAndDate() {
         this.$ajax({
-          method: 'get',
+          method: "get",
           url: interfaceStatistics,
           headers: {
-            "authorization": this.authenticationToken,
+            "authorization": this.authenticationToken
           },
           params: {
             serviceId: this.serviceId,
-            startDay: this.startDay + ' 00:00:00',
-            endDay: this.endDay + ' 00:00:00',
-            size: 500,
+            startDay: this.startDay + " 00:00:00",
+            endDay: this.endDay + " 00:00:00",
+            size: 500
           }
         }).then(res => {
           this.data[0].data = [];
-          console.log(res)
+          console.log(res);
           this.statisticsTimes = res.data.content;
           if (res.data.code !== 0) {
             for (var i = 0; i < this.statisticsTimes.length; i++) {
-              this.$set(this.data[0].data, i, this.statisticsTimes[i].count)
+              this.$set(this.data[0].data, i, this.statisticsTimes[i].count);
             }
             ;
           }
@@ -190,49 +190,49 @@
           myvue.other.series = myvue.data; //数据
           myvue.option = myvue.other;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //我的服务
       getUserService() {
         this.$ajax({
-          method: 'get',
+          method: "get",
           url: getUserService,
           headers: {
             "authorization": this.authenticationToken,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
           params: {
             serviceCategory: this.category,
-            size: 50,
+            size: 50
           }
         }).then(res => {
           this.teamInformation = res.data.content;
         }).catch(error => {
-          console.log(error)
-        })
+          console.log(error);
+        });
       },
       //切换服务
       switchingService() {
-        this.getTimeAndDate()
+        this.getTimeAndDate();
       }
     },
-    beforeCreate: function () {
+    beforeCreate: function() {
       myvue = this;
     },
-    mounted: function () {
+    mounted: function() {
 
-      this.getItem()
-      this.getUserService()
+      this.getItem();
+      this.getUserService();
     },
     components: {
       XChart
     },
     created() {
       this.serviceId = this.$route.query.serviceId;
-      this.authenticationToken = 'Bearer ' + Cookies.get("authenticationToken")
-    },
-  }
+      this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
+    }
+  };
 </script>
 <style>
   .highcharts-axis {

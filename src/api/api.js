@@ -1,9 +1,9 @@
-export const domainUrl = 'https://api2.easyapi.com';
+export const domainUrl = "https://api2.easyapi.com";
 
 //获取用户信息
 export const getAccountInfo = `https://account.easyapi.com/api/account`;
 //获取团队列表
-export const getMyTeam = `https://account.easyapi.com/api/userTeam/mine`
+export const getMyTeam = `https://account.easyapi.com/api/userTeam/mine`;
 //获取用户服务列表
 export const getUserService = `${domainUrl}/console/user/services`;
 //切换团队
