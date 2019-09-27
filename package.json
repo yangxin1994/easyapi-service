@@ -1,6 +1,7 @@
 {
   "name": "easyapi-service",
   "version": "0.1.0",
+  "description": "EasyAPI服务中心",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
