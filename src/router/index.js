@@ -8,19 +8,19 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      component: resolve => require(['../pages/index.vue'], resolve),
+      path: "/",
+      component: resolve => require(["../pages/index.vue"], resolve)
     },
     {
-      path: '/white-list',
-      name: 'white-list',
-      component: resolve => require(['../pages/white-list.vue'], resolve),
+      path: "/white-list",
+      name: "white-list",
+      component: resolve => require(["../pages/white-list.vue"], resolve)
     },
 
     {
-      path: '/stat',
-      name: 'stat',
-      component: resolve => require(['../pages/stat.vue'], resolve),
+      path: "/stat",
+      name: "stat",
+      component: resolve => require(["../pages/stat.vue"], resolve)
     }
   ]
 });
