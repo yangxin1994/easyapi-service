@@ -14,12 +14,6 @@ export const whiteList = `${domainUrl}/console/whiteList/check`;
 export const modify = `${domainUrl}/console/whiteList`;
 //接口统计
 export const interfaceStatistics = `${domainUrl}/console/serviceEveryday`;
-//查询 服务报价列表GET
-export const ServiceList = `${domainUrl}/console/servicePrice?serviceId=`;
-//查询团队的财务数据GET
-export const paymentMethod = `${domainUrl}/console/money/mine`;
-//续购服务POST
-export const balance = `${domainUrl}/console/servicePrice/continueBuy`;
 //团队服务详情 GET 获取秘钥信息GET
 export const Surplus = `${domainUrl}/console/teamService`;
 //获取我的余额提醒GET

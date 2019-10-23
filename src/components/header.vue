@@ -117,7 +117,7 @@
       getTeamList() {
         ajaxSender({
           url: getMyTeam,
-          method: 'get',
+          method: 'GET',
           data: {
             page: 0,
             size: 500

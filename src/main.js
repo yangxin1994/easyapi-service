@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import iView from "iview";
-import axios from "axios";
+import axios from "./api/fetch";
 import moment from "moment";
 import VueClipboard from "vue-clipboard2";
 

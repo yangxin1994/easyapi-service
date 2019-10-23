@@ -604,7 +604,7 @@
       //未加入服务的成员列表
       membersNotJoined() {
         this.$ajax({
-          method: "get",
+          method: "GET",
           url: memberList + "/" + this.serviceId + "/unJoinUsers",
           headers: {
             "authorization": this.authenticationToken

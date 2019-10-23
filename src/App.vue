@@ -16,23 +16,6 @@
     components: {
       "m-header": Header
     },
-
-    created: function() {
-      setToken(Cookies.get("accessToken") || null);
-      setAuthToken(Cookies.get("authenticationToken") || null);
-
-      ajaxSender({
-        method: "GET",
-        url: getAccountInfo,
-        accessToken: false,
-        successfun: data => {
-          if (!data.team) {
-            window.location.href = "https://team.easyapi.com/new";
-          }
-          this.$store.dispatch("setAccount", data);
-        }
-      });
-    },
     mounted() {
     }
   };
