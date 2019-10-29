@@ -9,9 +9,9 @@ export const getUserService = `${domainUrl}/console/user/services`;
 //切换团队
 export const tabTeam = `https://account.easyapi.com/api/changeTeam`;
 //获取我的白名单
-export const whiteList = `${domainUrl}/console/whiteList/check`;
+export const getWhiteList = `${domainUrl}/console/whiteList/check`;
 //修改白名单设置
-export const modify = `${domainUrl}/console/whiteList`;
+export const updateWhiteList = `${domainUrl}/console/whiteList`;
 //接口统计
 export const interfaceStatistics = `${domainUrl}/console/serviceEveryday`;
 //团队服务详情 GET 获取秘钥信息GET

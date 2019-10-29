@@ -25,7 +25,7 @@ const team = {
   },
 
   actions: {
-    getTeamList({ commit, state }) {
+    getTeamList({ commit }) {
       axios({
         url: getUserTeamList,
         method: "GET"
@@ -37,15 +37,17 @@ const team = {
           console.log(error);
         });
     },
-    //切换团队
-    switchoverTeam({ dispatch, commit, state }, id) {
+    /**
+     * 切换团队
+     */
+    changeTeam({ dispatch }, id) {
       axios({
         url: changeTeam + "/" + id,
         method: "PUT"
       })
         .then(res => {
           if (res.data.code === 1) {
-            dispatch("GetUserInfo");
+            dispatch("getUserInfo");
             location.hash = "";
             location.reload();
           }

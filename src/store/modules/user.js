@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "@/api/fetch";
-import {getAccountInfo} from "@/api/api";
+import { getAccountInfo } from "@/api/api";
 
 const user = {
   state: {
@@ -14,13 +14,11 @@ const user = {
     team: "",
     teamName: "",
     teamImg: "",
-    //用户团队
     userTeam: "",
     token: Cookies.get("authenticationToken")
   },
 
   mutations: {
-    //accountInfo
     SET_ACCOUNTINFO: (state, accountInfo) => {
       state.accountInfo = accountInfo;
     },
@@ -60,11 +58,10 @@ const user = {
   },
 
   actions: {
-    // 用户名登录
-    LoginByUsername({commit}, userInfo) {
-    },
-    // 获取用户信息
-    GetUserInfo({commit, state}) {
+    /**
+     * 获取用户信息
+     */
+    getUserInfo({ commit }) {
       axios({
         method: "GET",
         url: getAccountInfo
@@ -79,25 +76,15 @@ const user = {
           commit("SET_MOBILE", userInfoData.mobile);
           commit("SET_EMAIL", userInfoData.email);
           if (userInfoData.team) {
-            //团队信息{}，包括：name，img，id。。
             commit("SET_TEAM", userInfoData.team);
-            //团队信息具体信息
             commit("SET_TEAMNAME", userInfoData.team.name);
             commit("SET_TEAMIMG", userInfoData.team.img);
           }
-
-          //用户团队{}
-          console.log(userInfoData.userTeam);
           commit("SET_USERTEAM", userInfoData.userTeam);
-          console.log(state.userTeam);
         })
         .catch(error => {
           console.log(error.response);
         });
-    },
-    // 登出
-    Logout({commit, state}) {
-      Cookies.remove("authenticationToken");
     }
   }
 };

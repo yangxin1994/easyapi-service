@@ -184,9 +184,7 @@
             for (var i = 0; i < this.statisticsTimes.length; i++) {
               this.$set(this.data[0].data, i, this.statisticsTimes[i].count);
             }
-            ;
           }
-          ;
           myvue.other.series = myvue.data; //数据
           myvue.option = myvue.other;
         }).catch(error => {

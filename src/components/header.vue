@@ -30,7 +30,8 @@
             <div class="change-team-box">
               <h2 class="lrPading-20">切换团队：</h2>
               <div class="ea-team-list-box lrPading-20">
-                <a class="ea-team-item" v-if="teamListData.length" v-for="(item, index) in teamListData" @click="tabTeamFn(item)" :key="index">
+                <a class="ea-team-item" v-if="teamListData.length" v-for="(item, index) in teamListData"
+                   @click="tabTeamFn(item)" :key="index">
                   <img :src="item.team.img+'!icon.jpg'" alt="">
                   <span>{{item.team.name}}</span>
                 </a>
@@ -42,7 +43,7 @@
           </div>
         </div>
         <div class="user-avatar">
-          <a >
+          <a>
             <img id="showPersonage" :src="userInfoData.photo" alt="">
           </a>
           <div :class="{active:isActive}" class="ea-DropdownMenu">
@@ -57,52 +58,52 @@
 </template>
 
 <script>
-  import {getMyTeam, tabTeam} from '../api/api'
-  import {ajaxSender} from '../api/fetch'
+  import { getMyTeam, tabTeam } from "../api/api";
+  import { ajaxSender } from "../api/fetch";
 
   export default {
     name: "Header",
-    data: function () {
+    data: function() {
       return {
         selectedIndex: 5,
         isActive: false,
         showSerInfo: false,
         teamData: {
-          photo: '--',
-          name: '--'
+          photo: "--",
+          name: "--"
         },
         userInfoData: {
-          photo: '--',
-          name: '--'
+          photo: "--",
+          name: "--"
         },
         teamListData: ""
       };
     },
 
-    created: function () {
+    created: function() {
 
-      let body = document.querySelector('body');
-      body.addEventListener('click', (e) => {
-        if (e.target.id === 'showSerInfo' || e.target.className === 'team-icon') {
+      let body = document.querySelector("body");
+      body.addEventListener("click", (e) => {
+        if (e.target.id === "showSerInfo" || e.target.className === "team-icon") {
           this.isActive = false;
-          this.showSerInfo = !this.showSerInfo
-        } else if (e.target.id === 'showPersonage') {
+          this.showSerInfo = !this.showSerInfo;
+        } else if (e.target.id === "showPersonage") {
           this.isActive = !this.isActive;
           this.showSerInfo = false;
         } else {
           this.showSerInfo = false;
           this.isActive = false;
         }
-      }, false)
+      }, false);
     },
 
     watch: {
-      '$store.state.accountInfo': function () {
-        this.userInfoData.photo = this.$store.state.accountInfo.photo
-        this.userInfoData.name = this.$store.state.accountInfo.nickname
-        this.teamData.photo = this.$store.state.accountInfo.team.img
-        this.teamData.name = this.$store.state.accountInfo.team.name
-        this.getTeamList()
+      "$store.state.accountInfo": function() {
+        this.userInfoData.photo = this.$store.state.accountInfo.photo;
+        this.userInfoData.name = this.$store.state.accountInfo.nickname;
+        this.teamData.photo = this.$store.state.accountInfo.team.img;
+        this.teamData.name = this.$store.state.accountInfo.team.name;
+        this.getTeamList();
         localStorage.setItem("name", this.teamData.name);
       }
     },
@@ -117,7 +118,7 @@
       getTeamList() {
         ajaxSender({
           url: getMyTeam,
-          method: 'GET',
+          method: "GET",
           data: {
             page: 0,
             size: 500
@@ -125,23 +126,23 @@
           successfun: (res) => {
             this.teamListData = res.content;
           }
-        })
+        });
       },
 
       jupmPage(url) {
-        this.$router.push(url)
+        this.$router.push(url);
       },
 
       tabTeamFn(item) {
         ajaxSender({
-          url: tabTeam + '/' + item.team.id,
-          method: 'put',
+          url: tabTeam + "/" + item.team.id,
+          method: "put",
           successfun: (res) => {
             if (res.code) {
-              location.reload()
+              location.reload();
             }
           }
-        })
+        });
       }
     }
   };
@@ -291,7 +292,7 @@
       position: relative;
 
       & > a {
-        padding: (15px / 2px)  20px;
+        padding: (15px / 2px) 20px;
         height: 50px;
         display: inline-block;
 

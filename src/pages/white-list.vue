@@ -28,12 +28,12 @@
           <li>(充值类业务如话费、油卡等，强烈建议绑定服务IP白名单)</li>
         </ul>
       </div>
-      <Button class="btn" @click="modifyWhiteList">保存设置</Button>
+      <Button class="btn" @click="updateWhiteList">保存设置</Button>
     </div>
   </div>
 </template>
 <script>
-  import { getUserService, whiteList, modify } from "../api/api";
+  import { getUserService, getWhiteList, updateWhiteList } from "../api/api";
   import Cookies from "js-cookie";
 
   export default {
@@ -73,7 +73,7 @@
         }
       },
       //获取我的服务
-      getMyServe() {
+      getMyService() {
         this.$ajax({
           method: "get",
           url: getUserService,
@@ -94,8 +94,8 @@
       //获取白名单
       getWhiteList() {
         this.$ajax({
-          url: whiteList,
-          method: "get",
+          url: getWhiteList,
+          method: "GET",
           headers: {
             "authorization": this.authenticationToken
           }
@@ -109,18 +109,17 @@
           this.checkAllGroup = serviceIdsData;
         }).catch(error => {
           console.log(error);
-          // this.$Message.error(error.body.message)
         });
       },
       //修改白名单
-      modifyWhiteList() {
+      updateWhiteList() {
         let obj = {};
         obj.id = this.serverIds;
         obj.serviceIds = this.checkAllGroup.join(",");
         obj.ips = this.IpWhiteListData;
         this.$ajax({
-          url: modify,
-          method: "put",
+          url: updateWhiteList,
+          method: "PUT",
           headers: {
             "authorization": this.authenticationToken
           },
@@ -140,7 +139,7 @@
     },
     mounted() {
       document.title = "IP白名单 - EasyAPI";
-      this.getMyServe();
+      this.getMyService();
       this.getWhiteList();
     }
   };
