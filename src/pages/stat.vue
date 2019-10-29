@@ -123,7 +123,6 @@
       },
       //选择时间
       selectionDate(style, par) {
-        console.log(style);
         this.Switching = style;
         this.startDay = this.$moment(par[0]).format("YYYY-MM-DD");
         this.endDay = this.$moment(par[1]).format("YYYY-MM-DD");
@@ -149,17 +148,14 @@
           if (String(dateList[1]).length == 1) {
             dateList[1] = "0" + dateList[1];
           }
-          ;
           if (String(dateList[2]).length == 1) {
             dateList[2] = "0" + dateList[2];
           }
-          ;
           this.dayArr.push(dateList[0] + "-" + dateList[1] + "-" + dateList[2]);
           if (dateList[0] == endDay[0] && dateList[1] == endDay[1] && dateList[2] == endDay[2]) {
             i = 1;
           }
         }
-        ;
         this.getTimeAndDate();
       },
       //接口统计
@@ -178,7 +174,6 @@
           }
         }).then(res => {
           this.data[0].data = [];
-          console.log(res);
           this.statisticsTimes = res.data.content;
           if (res.data.code !== 0) {
             for (var i = 0; i < this.statisticsTimes.length; i++) {

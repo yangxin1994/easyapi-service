@@ -75,7 +75,7 @@
       //获取我的服务
       getMyService() {
         this.$ajax({
-          method: "get",
+          method: "GET",
           url: getUserService,
           params: {
             size: 100

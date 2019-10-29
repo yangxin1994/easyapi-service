@@ -3,7 +3,7 @@
     <div class="h-left clearfix">
       <a href="https://www.easyapi.com">
         <div class="ea-header-item logo">
-          <img src="../assets/images/logo.png" alt="">
+          <img src="https://qiniu.easyapi.com/icon.png" alt="">
         </div>
       </a>
       <router-link class="ea-header-item" to="/">API服务中心</router-link>
