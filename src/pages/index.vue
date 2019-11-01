@@ -347,7 +347,6 @@
       },
       copyappSecret() {
         var clipboard = new Clipboard(".copy");
-        console.log(clipboard);
         clipboard.on("success", e => {
           this.$Message.success("复制成功");
           // 释放内存

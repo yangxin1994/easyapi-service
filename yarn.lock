@@ -2397,10 +2397,15 @@ core-js-pure@^3.0.0:
   resolved "https://registry.npm.taobao.org/core-js-pure/download/core-js-pure-3.3.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js-pure%2Fdownload%2Fcore-js-pure-3.3.5.tgz#23dc7e44bb946bf1752b377709e8591faffb0bac"
   integrity sha1-I9x+RLuUa/F1Kzd3CehZH6/7C6w=
 
-core-js@^3.3.2, core-js@^3.3.5:
+core-js@^3.3.2:
   version "3.3.5"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.3.5.tgz?cache=0&sync_timestamp=1572283858623&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.3.5.tgz#58d20f48a95a07304b62ff752742b82b56431ed8"
   integrity sha1-WNIPSKlaBzBLYv91J0K4K1ZDHtg=
+
+core-js@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.3.6.tgz#6ad1650323c441f45379e176ed175c0d021eac92"
+  integrity sha1-atFlAyPEQfRTeeF27RdcDQIerJI=
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -4054,10 +4059,10 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.npm.taobao.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
 
-highcharts@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.npm.taobao.org/highcharts/download/highcharts-7.2.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhighcharts%2Fdownload%2Fhighcharts-7.2.0.tgz#d6bd00240767cfab67210ead47c6cd015384e74d"
-  integrity sha1-1r0AJAdnz6tnIQ6tR8bNAVOE500=
+highcharts@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.npm.taobao.org/highcharts/download/highcharts-7.2.1.tgz#313c434bbfd4525a72b76c6bfbd9c39dfe2d1993"
+  integrity sha1-MTxDS7/UUlpyt2xr+9nDnf4tGZM=
 
 highlight.js@^9.6.0:
   version "9.15.10"
