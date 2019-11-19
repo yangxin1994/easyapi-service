@@ -5,7 +5,8 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function(config) {
-    config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
+    config.headers.authorization =
+      "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
   function(error) {
