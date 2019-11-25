@@ -5,8 +5,7 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function(config) {
-    config.headers.authorization =
-      "Bearer " + Cookies.get("authenticationToken");
+    config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
   function(error) {
@@ -19,7 +18,6 @@ axios.interceptors.response.use(
   function(response) {
     if (response.status === 204) {
       // 处理204返回内容为空
-      console.log(204);
     }
     return response;
   },
