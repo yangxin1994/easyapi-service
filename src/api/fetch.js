@@ -4,28 +4,27 @@ import Cookies from "js-cookie";
 
 // 添加请求拦截器
 axios.interceptors.request.use(
-  function(config) {
+  config => {
     config.headers.authorization =
       "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
-  function(error) {
+  error => {
     return Promise.reject(error);
   }
 );
 
 // 添加响应拦截器
 axios.interceptors.response.use(
-  function(response) {
+  response => {
     if (response.status === 204) {
       // 处理204返回内容为空
-      console.log(204);
+
     }
     return response;
   },
-  function(error) {
+  error => {
     // 对响应错误做点什么
-    console.log(error.response);
     if (error.response.data.code === -9) {
       // 处理-9用户信息不存在
       window.location.href = "https://account.easyapi.com/login";

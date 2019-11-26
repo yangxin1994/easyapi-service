@@ -57,7 +57,12 @@
                   "
                   style="font-size:12px"
                 >
-                  剩余{{ information.teamService.balance }}次
+                  剩余
+                  <span
+                    v-if="information.teamService.balance<100"
+                    style="color:#ff4a53;"
+                  >{{ information.teamService.balance }}</span>
+                  <span v-else>{{ information.teamService.balance }}</span> 次
                   <span
                     v-if="information.teamService.balance < 101"
                     @click.stop="
@@ -83,17 +88,15 @@
                     >续费</span>
                   </span>
                   <span v-if="information.teamService.endTime > currentTime">
-                    <span
-                      style="color:#999;"
-                      v-if="information.teamService.remainDay > 30"
-                    >剩余{{ information.teamService.remainDay }}天</span>
-                    <span
-                      style="color: #ff4a53;"
-                      v-if="
-                        information.teamService.remainDay <= 30 &&
-                          information.teamService.remainDay !== 0
-                      "
-                    >剩余{{ information.teamService.remainDay }}天</span>
+                    <span style="color:#999;" v-if="information.teamService.remainDay !==0">
+                      剩余
+                      <span
+                        v-if="information.teamService.remainDay<100"
+                        style="color:#ff4a53;"
+                      >{{ information.teamService.remainDay }}</span>
+                      <span v-else>{{ information.teamService.remainDay }}</span> 天
+                    </span>
+
                     <span style="color: #ff4a53;" v-if="information.teamService.remainDay === 0">已到期</span>
                     <span
                       v-if="information.teamService.remainDay <= 30"

@@ -5,13 +5,11 @@ import store from "./store";
 import iView from "iview";
 import axios from "./api/fetch";
 import moment from "moment";
-import VueClipboard from "vue-clipboard2";
 
 import "iview/dist/styles/iview.css";
 import "./assets/iconfont/iconfont.css";
 
 Vue.use(iView);
-Vue.use(VueClipboard);
 
 Vue.prototype.$ajax = axios;
 Vue.prototype.$moment = moment;

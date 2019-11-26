@@ -13,7 +13,19 @@
             <span :value="checkAll" @click="handleCheckAll1">全不选</span>]
           </span>
         </p>
-        <CheckboxGroup
+        <div class="white-list-all">
+          <div
+            class="white-list-item"
+            v-for="(item, index) in CheckboxData"
+            :key="index"
+            :class="{'is-choosed':checkAllGroup.indexOf(item.service.serviceId)!=-1}"
+            @click="chooseWhiteListItem(item.service.serviceId)"
+          >
+            <img :src="item.service.img" alt />
+            <p>{{ item.service.name }}</p>
+          </div>
+        </div>
+        <!-- <CheckboxGroup
           v-model="checkAllGroup"
           @on-change="checkAllGroupChange"
           class="CheckboxGroup"
@@ -25,15 +37,10 @@
             class="Checkbox"
             >{{ item.service.name }}</Checkbox
           >
-        </CheckboxGroup>
+        </CheckboxGroup>-->
       </div>
       <div class="inpit_l">
-        <Input
-          v-model="IpWhiteListData"
-          type="textarea"
-          placeholder="请输入白名单IP..."
-          class="inpuit"
-        />
+        <Input v-model="IpWhiteListData" type="textarea" placeholder="请输入白名单IP..." class="inpuit" />
         <ul>
           <li>格式说说明；</li>
           <li>一行写一个IP，如：</li>
@@ -47,122 +54,135 @@
   </div>
 </template>
 <script>
-import { getUserService, getWhiteList, updateWhiteList } from "../api/api";
-import Cookies from "js-cookie";
+import { getUserService, getWhiteList, updateWhiteList } from '../api/api'
+import Cookies from 'js-cookie'
 
 export default {
   data() {
     return {
-      serverIds: "", //服务的id逗号隔开字符串
-      value: "",
-      IpWhiteListData: "",
+      serverIds: '', //服务的id逗号隔开字符串
+      value: '',
+      IpWhiteListData: '',
       indeterminate: false,
       checkAll: false,
       checkAllGroup: [],
       CheckboxData: [],
-      authenticationToken: ""
-    };
+      authenticationToken: ''
+    }
   },
   methods: {
     handleCheckAll() {
-      this.checkAll = true;
-      this.checkAllGroup = [];
-      for (let i = 0; i < this.CheckboxData.length; i++) {
-        this.checkAllGroup.push(this.CheckboxData[i].service.serviceId);
-      }
+      this.checkAll = true
+      this.checkAllGroup = this.CheckboxData.map(item => {
+        return Number(item.service.serviceId)
+      })
+      // for (let i = 0; i < this.CheckboxData.length; i++) {
+      //   this.checkAllGroup.push(this.CheckboxData[i].service.serviceId)
+      // }
     },
     handleCheckAll1() {
-      this.checkAllGroup = [];
+      this.checkAll = false
+      this.checkAllGroup = []
     },
     checkAllGroupChange(data) {
       if (data.length === this.CheckboxData.length) {
-        this.indeterminate = false;
-        this.checkAll = true;
+        this.indeterminate = false
+        this.checkAll = true
       } else if (data.length > 0) {
-        this.indeterminate = true;
-        this.checkAll = false;
+        this.indeterminate = true
+        this.checkAll = false
       } else {
-        this.indeterminate = false;
-        this.checkAll = false;
+        this.indeterminate = false
+        this.checkAll = false
       }
     },
     //获取我的服务
     getMyService() {
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: getUserService,
         params: {
           size: 100
         },
         headers: {
           authorization: this.authenticationToken,
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
       })
         .then(res => {
-          this.CheckboxData = res.data.content;
+          this.CheckboxData = res.data.content
         })
         .catch(error => {
-          console.log(error);
-          this.$Message.error(error.body.message);
-        });
+          console.log(error)
+          this.$Message.error(error.body.message)
+        })
     },
     //获取白名单
     getWhiteList() {
       this.$ajax({
         url: getWhiteList,
-        method: "GET",
+        method: 'GET',
         headers: {
           authorization: this.authenticationToken
         }
       })
         .then(res => {
-          this.IpWhiteListData = res.data.content.ips;
-          this.serverIds = res.data.content.whiteListId;
-          let serviceIdsData = res.data.content.serviceIds.split(",");
-          for (let i = 0; i < serviceIdsData.length; i++) {
-            serviceIdsData[i] = Number(serviceIdsData[i]);
-          }
-          this.checkAllGroup = serviceIdsData;
+          this.IpWhiteListData = res.data.content.ips
+          this.serverIds = res.data.content.whiteListId
+          let serviceIdsData = res.data.content.serviceIds.split(',')
+
+          this.checkAllGroup = serviceIdsData.map(item => {
+            return Number(item)
+          })
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     //修改白名单
     updateWhiteList() {
-      let obj = {};
-      obj.id = this.serverIds;
-      obj.serviceIds = this.checkAllGroup.join(",");
-      obj.ips = this.IpWhiteListData;
+      let obj = {}
+      obj.id = this.serverIds
+      obj.serviceIds = this.checkAllGroup.join(',')
+      obj.ips = this.IpWhiteListData
       this.$ajax({
         url: updateWhiteList,
-        method: "PUT",
+        method: 'PUT',
         headers: {
           authorization: this.authenticationToken
         },
         data: obj
       })
         .then(res => {
-          this.$Message.success(res.data.message);
-          this.getMyServe();
-          this.getWhiteList();
+          this.$Message.success(res.data.message)
+          this.getMyServe()
+          this.getWhiteList()
         })
         .catch(error => {
-          console.log(error);
-          this.$Message.error(error.data.message);
-        });
+          console.log(error)
+          this.$Message.error(error.data.message)
+        })
+    },
+    chooseWhiteListItem(id) {
+      let index = this.checkAllGroup.findIndex(item => {
+        return item === id
+      })
+      if (index != -1) {
+        this.checkAllGroup.splice(index, 1)
+      } else {
+        this.checkAllGroup.push(id)
+      }
     }
   },
   created() {
-    this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
+    this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
   },
   mounted() {
-    document.title = "IP白名单 - EasyAPI";
-    this.getMyService();
-    this.getWhiteList();
+    document.title = 'IP白名单 - EasyAPI'
+    this.getMyService()
+    this.getWhiteList()
   }
-};
+}
 </script>
 <style>
 .inpuit .ivu-input {
@@ -278,5 +298,43 @@ export default {
   color: #ffffff;
   font-size: 14px;
   margin-top: 20px;
+}
+.white-list-all {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1200px;
+}
+.white-list-item {
+  width: 80px;
+  height: 110px;
+  margin-right: 32px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+.white-list-item:nth-child(11n) {
+  margin-right: 0;
+}
+.white-list-item img {
+  width: 80px;
+  height: 80px;
+}
+.white-list-item p {
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  border: 1px solid #dddddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.white-list-item.is-choosed p {
+  border: 1px solid #18c1d6;
+  color: #18c1d6;
 }
 </style>
