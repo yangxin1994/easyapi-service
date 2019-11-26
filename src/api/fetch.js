@@ -4,9 +4,8 @@ import Cookies from "js-cookie";
 
 // 添加请求拦截器
 axios.interceptors.request.use(
-  config => {
-    config.headers.authorization =
-      "Bearer " + Cookies.get("authenticationToken");
+  function (config) {
+    config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
   error => {
@@ -19,7 +18,6 @@ axios.interceptors.response.use(
   response => {
     if (response.status === 204) {
       // 处理204返回内容为空
-
     }
     return response;
   },
