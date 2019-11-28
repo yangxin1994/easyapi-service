@@ -13,7 +13,8 @@ module.exports = {
         endOfLine: "auto"
       }
     ],
-    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+    "vue/no-unused-components": 'off'
   },
   parserOptions: {
     parser: "babel-eslint"

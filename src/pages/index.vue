@@ -212,223 +212,22 @@
           </p>
         </div>
         <!--秘钥管理-->
-        <div class="Modal_left" v-show="nowIndex === 0">
-          <div class="secret_key">
-            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-              <FormItem label="AccessKey" prop="appKey" style="margin-top:20px;" class="fk">
-                <Input
-                  placeholder="AccessKey"
-                  v-model="formValidate.appKey"
-                  disabled
-                  style="width: 300px;"
-                  id="copyAppKey"
-                />
-                <button
-                  type="button"
-                  class="copy"
-                  :data-clipboard-text="this.formValidate.appKey"
-                  @click="copyappKey"
-                >复制</button>
-              </FormItem>
-              <FormItem label="SecretKey" prop="appSecret" class="fk">
-                <Input
-                  :type="inputType"
-                  v-model="formValidate.appSecret"
-                  disabled
-                  placeholder="SecretKey"
-                  style="width:300px"
-                  class="copyContent"
-                />
-                <button
-                  type="button"
-                  class="copy"
-                  :data-clipboard-text="this.formValidate.appSecret"
-                  @click="copyappSecret"
-                >复制</button>
-                <span class="display" @click="showInputData">{{ btnContent }}</span>
-              </FormItem>
-              <FormItem>
-                <Button
-                  style="background-color: #18c1d6;color: #fff;font-size: 14px;"
-                  @click="modificationKey()"
-                >更换秘钥</Button>
-                <span
-                  style="display: block;margin-top:10px;color: #999999;font-size: 12px"
-                >此秘钥仅限于短信服务使用</span>
-                <span style="line-height:0px;color: #999999;font-size: 12px">出于安全考虑，建议您周期性的更换密钥</span>
-              </FormItem>
-            </Form>
-
-            <Modal
-              v-model="changeKeyHint"
-              title="温馨提示"
-              @on-ok="ok"
-              @on-cancel="cancel"
-              :styles="{ top: '230px' }"
-              width="350"
-            >
-              <div class="changeKeyHint_box">
-                <p>重置之后，以前的appKey和appSecret将不能正常使用，并且会导致以前的API调用失效。重置appKey和appSecret后，请及时将以前的接口调用中的参数进行更新。</p>
-                <p>确认重置appKey和appSecret吗？</p>
-              </div>
-            </Modal>
-          </div>
+        <div class="Modal_left" v-if="nowIndex === 0">
+          <mySecret :formValidate="formValidate" :tsID="tsID"></mySecret>
         </div>
         <!--成员管理-->
-        <div class="Modal_left" v-show="nowIndex === 1">
-          <div class="staff">
-            <span class="staff_member">
-              <img
-                :src="defaultMemberImg"
-                alt
-                style="width:40px;height:40px;border-radius:25px;margin-left:10px;margin-top:18px;"
-              />
-              <ul style="width:85px;height: 100%;padding-top:15px;">
-                <li style="color: #1bc1d6;font-size:16px;">{{ defaultMemberNickname }}</li>
-                <li>{{ defaultMemberType }}</li>
-              </ul>
-            </span>
-            <span
-              class="staff_member fq"
-              v-for="(staff, staffIndex) in member"
-              :key="staffIndex"
-              style="position: relative"
-            >
-              <span v-if="staff.type !== '创建人'">
-                <span class="lpha" @click="deleteMember(staff.userServiceId)">X</span>
-                <img
-                  :src="staff.user.photo"
-                  alt
-                  style="width:40px;height:40px;border-radius:25px;margin-left:10px;margin-top:18px;"
-                />
-                <ul style="width:85px;height: 100%;padding-top:15px;">
-                  <li style="color: #1bc1d6;font-size:16px;">{{ staff.user.nickname }}</li>
-                  <li>{{ staff.type }}</li>
-                </ul>
-                <Modal v-model="Dmember" @on-ok="prompt" :styles="{ top: '230px' }">
-                  <p
-                    style="height: 100px;line-height:100px;text-align: center;color: #333;font-size: 16px"
-                  >确定删除成员{{ nickname }}吗?</p>
-                </Modal>
-              </span>
-            </span>
-            <span class="addTO" @click="displayAdd">
-              <Icon
-                type="ios-add-circle-outline"
-                style="color: #1bc0d6;font-size:40px;line-height: 70px;"
-              />
-              <span style="color: #333333;font-size:16px;line-height:70px;margin-left:10px;">添加成员</span>
-            </span>
-          </div>
-          <div class="addMembers" style="margin-top:15px;" v-if="show">
-            <h3 style="padding-left:28px">添加其他成员</h3>
-            <div style=" overflow: hidden;">
-              <span
-                class="staff_member"
-                @click="projectile(people.nickname, people.id)"
-                v-for="(people, peopleIndex) in notAdded"
-                :key="peopleIndex"
-                style="position: relative;margin-top:0px"
-              >
-                <span v-if="notAdded.code !== 0">
-                  <img
-                    :src="people.photo"
-                    alt
-                    style="width:40px;height:40px;border-radius:25px;margin-left:10px;margin-top:18px;"
-                  />
-                  <ul style="width:85px;height: 100%;padding-top:25px;">
-                    <li style="color: #1bc1d6;font-size:16px;">{{ people.nickname }}</li>
-                    <li>{{ people.type }}</li>
-                  </ul>
-                  <Modal v-model="frame" @on-ok="Sure" :styles="{ top: '230px' }" class="dialogue">
-                    <p
-                      style="height: 100px;line-height:100px;text-align: center;color: #333;font-size: 16px"
-                    >确定添加成员{{ nickname }}吗?</p>
-                  </Modal>
-                </span>
-              </span>
-            </div>
-          </div>
+        <div class="Modal_left" v-if="nowIndex === 1">
+          <myMember :serviceId="serviceId" :teamServiceId="tsID"></myMember>
         </div>
         <!--余额提醒-->
-        <div class="Modal_left" v-show="nowIndex === 2" v-if="this.type !== 1 && this.type !== 4">
-          <div class="secret_balance">
-            <div class="balance_remind">
-              <p v-if="judgmentUnit === 2">
-                <span>当前剩余次数：&nbsp;&nbsp;&nbsp;&nbsp;{{ balance }}次</span>
-              </p>
-              <p v-if="judgmentUnit === 3">
-                <span>当前剩余时间：&nbsp;&nbsp;&nbsp;&nbsp;{{ remainDay }}天</span>
-              </p>
-              <p style="padding-left:48px">
-                <span>是否提醒：</span>
-                <i-switch
-                  size="large"
-                  v-model="switch1"
-                  @on-change="change"
-                  style="margin-left:14px;"
-                >
-                  <span slot="open" style="color: #fff">开启</span>
-                  <span slot="close" style="color: #fff">关闭</span>
-                </i-switch>
-              </p>
-              <p v-if="this.type == 2 && this.type == 1 && this.type == 4">
-                <span>剩余提醒次数：&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <InputNumber v-model="balanceWarnNo" :disabled="!switch1" :min="1"></InputNumber>
-                <span>&nbsp;&nbsp;次</span>
-              </p>
-              <p v-if="this.type == 3">
-                <span>剩余提醒时间：&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <InputNumber v-model="balanceWarnNo" :disabled="!switch1" :min="1"></InputNumber>
-                <span>&nbsp;&nbsp;天</span>
-              </p>
-              <div style="padding-left:48px;display:flex">
-                <span style="line-height:60px;color:#000;font-size: 14px">通知人员：</span>
-                <span style="margin-left:20px;height:auto;width:80%;">
-                  <CheckboxGroup
-                    v-model="checkbox"
-                    style="width:100%;height:auto;line-height:60px;;float: left"
-                  >
-                    <Checkbox
-                      :label="User.user.id"
-                      v-for="(User, userIndex) in tipsMember"
-                      :key="userIndex"
-                      style="width:150px;height:60px;margin-right:20px;position:relative"
-                    >
-                      <img
-                        :src="User.user.photo"
-                        alt
-                        style="width:40px;height:40px;border-radius:25px;margin-left:5px;position:absolute;bottom:10px"
-                      />
-                      <span
-                        style="margin-left:53px;color: #333333;font-size: 14px;"
-                      >{{ User.user.nickname }}</span>
-                    </Checkbox>
-                  </CheckboxGroup>
-                </span>
-              </div>
-            </div>
-            <div class="balance_btn">
-              <Button
-                @click="renew"
-                style="	width:100px;height:40px;font-size:14px;background-color: #18c1d6;color: #fff;margin-top:40px"
-              >续费</Button>
-            </div>
-          </div>
-          <div class="btn">
-            <Button
-              @click="reviseTheBalance"
-              style="	width:100px;height:40px;font-size:14px;background-color: #18c1d6;color: #fff;margin-left:120px;margin-top:10px"
-            >保存设置</Button>
-          </div>
-          <div class="ea-warnBox">
-            <p>备注：</p>
-            <p>1、单击"开启"或"关闭" 控件改变提醒状态</p>
-            <p>2、单机 进入编辑模式，更改余额提醒上限</p>
-            <p>3、单机 添加提醒列表</p>
-            <p>4、单机提醒列表中 按钮删除该联系人</p>
-            <p>5、请注意： 提醒方式和提醒列表是账户共享设置</p>
-          </div>
+        <div class="Modal_left" v-if="nowIndex === 2&this.type !== 1 && this.type !== 4">
+          <myBalance
+            :judgmentUnit="judgmentUnit"
+            :balance="balance"
+            :remainDay="remainDay"
+            :type="type"
+            :serviceId="serviceId"
+          ></myBalance>
         </div>
       </div>
     </Modal>
@@ -438,16 +237,17 @@
 <script>
 import {
   getUserService,
-  Surplus,
-  Reminding,
-  memberList,
-  modifyBalance,
-  addMembers
+  Surplus
+  // Reminding,
+  // memberList
+  // modifyBalance
 } from '../api/api'
-import Clipboard from 'clipboard'
 import Cookies from 'js-cookie'
-
+import myMember from './setting/member'
+import myBalance from './setting/balance'
+import mySecret from './setting/secret'
 export default {
+  components: { myMember, myBalance, mySecret },
   data() {
     return {
       defaultMemberImg: '',
@@ -459,10 +259,7 @@ export default {
       startTime: '',
       currentTime: '',
       Close: false,
-      btnContent: '显示',
       assignment: '秘钥管理',
-      inputType: 'password',
-      switch1: '', //提醒开关
       tsID: '',
       nowIndex: 0,
       isShow: false,
@@ -471,14 +268,12 @@ export default {
       balance: '',
       serviceId: '',
       type: '',
-      checkbox: [],
-      member: '',
+
       balanceWarnNo: null,
       judgmentUnit: '',
-      notAdded: '',
-      frame: false,
+
       Dmember: false,
-      nickname: '',
+
       userId: '',
       show: false,
       code: '',
@@ -492,67 +287,10 @@ export default {
       formValidate: {
         appKey: '',
         appSecret: ''
-      },
-      ruleValidate: {
-        appKey: [
-          {
-            required: true,
-            message: '请输入appKey，且不能为空',
-            trigger: 'blur'
-          }
-        ],
-        appSecret: [
-          {
-            required: true,
-            message: '请输入appSecret，且不能为空',
-            trigger: 'blur'
-          }
-        ]
       }
     }
   },
   methods: {
-    //点击复制
-    copyappKey() {
-      var clipboard = new Clipboard('.copy')
-      clipboard.on('success', () => {
-        this.$Message.success('复制成功')
-        // 释放内存
-        clipboard.destroy()
-      })
-      clipboard.on('error', () => {
-        // 不支持复制
-        this.$Message.error('该浏览器不支持自动复制')
-        // 释放内存
-        clipboard.destroy()
-      })
-    },
-    copyappSecret() {
-      var clipboard = new Clipboard('.copy')
-      clipboard.on('success', () => {
-        this.$Message.success('复制成功')
-        // 释放内存
-        clipboard.destroy()
-      })
-      clipboard.on('error', () => {
-        // 不支持复制
-        this.$Message.error('该浏览器不支持自动复制')
-        // 释放内存
-        clipboard.destroy()
-      })
-    },
-
-    //显示未添加成员
-    displayAdd() {
-      this.show = true
-    },
-    change(status) {
-      if (status) {
-        this.$Message.info('开启提醒')
-      } else {
-        this.$Message.info('取消提醒')
-      }
-    },
     stand(pay, index) {
       this.assignment = pay
       this.nowIndex = index
@@ -567,20 +305,6 @@ export default {
       this.teamId = teamId
       // console.log(index)
       this.secretKey()
-      this.remindingOfTheBalance()
-      this.getMemberList()
-      this.getNmaeList()
-      this.membersNotJoined()
-      this.promptingStaff()
-    },
-    showInputData() {
-      if (this.inputType === 'password') {
-        this.inputType = 'text'
-        this.btnContent = '隐藏'
-      } else {
-        this.inputType = 'password'
-        this.btnContent = '显示'
-      }
     },
 
     //跳转到白名单页面
@@ -608,6 +332,7 @@ export default {
         query: { serviceId: serviceId, teamServiceId: teamServiceId }
       })
     },
+
     //服务列表
     colorSwitching(category) {
       this.category = category
@@ -654,240 +379,6 @@ export default {
         .catch(error => {
           console.log(error)
         })
-    },
-    //修改秘钥
-    modificationKey() {
-      this.changeKeyHint = true
-    },
-    ok() {
-      let obj = {}
-      obj.id = this.tsID
-      this.$ajax({
-        method: 'put',
-        url: Surplus,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify(obj)
-      })
-        .then(res => {
-          this.formValidate.appKey = res.data.content.appKey
-          this.formValidate.appSecret = res.data.content.appSecret
-          this.secretKey()
-          this.$Message.success(res.data.message)
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.data.message)
-        })
-    },
-    cancel() {},
-    //余额提醒上限
-    remindingOfTheBalance() {
-      this.$ajax({
-        method: 'GET',
-        url: Reminding + '/' + this.serviceId,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-        .then(res => {
-          if (res.data.code === 0) {
-            // this.$Message.error("余额提醒上限暂无数据");
-            this.switch1 = false
-          } else {
-            this.switch1 = true
-            this.balanceWarnNo = res.data.content.count
-          }
-        })
-        .catch(error => {
-          console.log(error)
-          if (error.data.code === -1) {
-            this.$Message.warning(error.data.message)
-          } else {
-            this.$Message.error('数据错误')
-          }
-        })
-    },
-    //修改余额提醒设置
-    reviseTheBalance() {
-      let remindUserIds = this.checkbox.join(',')
-      this.$ajax({
-        method: 'PUT',
-        url: modifyBalance,
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          remindUserIds: remindUserIds,
-          ifRemind: this.switch1,
-          serviceId: this.serviceId,
-          count: this.balanceWarnNo
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-
-    //提示人员
-    promptingStaff() {
-      this.$ajax({
-        method: 'get',
-        url: modifyBalance,
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          serviceId: this.serviceId
-        }
-      })
-        .then(res => {
-          this.selectedPersonnel = res.data.content
-          let code = res.data.code
-          if (code !== 0) {
-            for (let i = 0; i < this.selectedPersonnel.length; i++) {
-              this.checkbox[i] = this.selectedPersonnel[i].remindUser.id
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    //获取服务的成员列表
-    getMemberList() {
-      this.$ajax({
-        method: 'get',
-        url: memberList + this.serviceId + '/users',
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          size: 100
-        }
-      })
-        .then(res => {
-          this.member = res.data.content
-          this.defaultMemberImg = res.data.content[0].user.photo
-          this.defaultMemberNickname = res.data.content[0].user.nickname
-          this.defaultMemberType = res.data.content[0].type
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    //余额提醒成员列表
-    getNmaeList() {
-      this.$ajax({
-        method: 'GET',
-        url: memberList + this.serviceId + '/users',
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          size: 100,
-          types: '创建人,管理员'
-        }
-      })
-        .then(res => {
-          this.tipsMember = res.data.content
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    //未加入服务的成员列表
-    membersNotJoined() {
-      this.$ajax({
-        method: 'GET',
-        url: memberList + this.serviceId + '/unJoinUsers',
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
-          this.notAdded = res.data
-          this.code = res.data.code
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    //添加成员
-    projectile(nickname, id) {
-      this.frame = true
-      this.nickname = nickname
-      this.userId = id
-    },
-    //添加成员
-    Sure() {
-      this.$ajax({
-        method: 'POST',
-        url: addMembers,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/json'
-        },
-        params: {
-          userId: this.userId,
-          serviceId: this.serviceId,
-          teamServiceId: this.teamServiceId
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-    //删除成员
-    deleteMember(id) {
-      this.Dmember = true
-      this.MemberId = id
-    },
-    prompt() {
-      this.$ajax({
-        method: 'DELETE',
-        url: addMembers + '/' + this.MemberId,
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-    //续费跳转页面
-    renew() {
-      if (this.type == 3) {
-        this.$router.push({
-          path: '/renew/monthly',
-          query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-        })
-      }
-      if (this.type == 2 || this.type == 1 || this.type == 4) {
-        this.$router.push({
-          path: '/renew/count',
-          query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-        })
-      }
     }
   },
   created() {
@@ -965,23 +456,6 @@ fieldset[disabled] .ivu-input {
   border-right: none;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
-}
-
-.addMembers .ivu-modal-body {
-  height: 100px;
-  margin: 0px;
-  padding: 0px;
-}
-
-.dialogue .ivu-modal-mask {
-  /*background-color:transparent;*/
-  background-color: rgba(55, 55, 55, 0.1);
-  /*background-color:#000;*/
-  /*opacity:0.1;*/
-}
-
-.dialogue .ivu-modal-content {
-  box-shadow: none;
 }
 
 .ivu-btn.active,
@@ -1239,123 +713,6 @@ fieldset[disabled] .ivu-input {
   height: auto;
 }
 
-.secret_key {
-  width: 100%;
-  height: auto;
-}
-
-.display {
-  width: 32px;
-  height: 18px;
-  line-height: 18px;
-  text-align: center;
-  background-color: #4a91f8;
-  border-radius: 3px;
-  border: solid 1px #427fd8;
-  color: #ffffff;
-  font-size: 12px;
-  cursor: pointer;
-  position: absolute;
-  left: 250px;
-  top: 8px;
-}
-
-.secret_balance {
-  width: 100%;
-  height: auto;
-  display: flex;
-}
-
-.secret_balance .balance_remind {
-  width: 80%;
-  height: auto;
-}
-
-.secret_balance .balance_remind p {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  padding-left: 20px;
-}
-
-.secret_balance .balance_remind p span {
-  color: #000000;
-  font-size: 14px;
-}
-
-.balance_btn {
-  width: 20%;
-  height: auto;
-}
-
-.ea-warnBox {
-  width: 100%;
-  height: auto;
-  padding-left: 130px;
-}
-
-.ea-warnBox p {
-  color: #999999;
-  font-size: 14px;
-}
-
-.btn {
-  width: 100%;
-  height: 60px;
-}
-
-.staff {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-
-.staff_member {
-  width: 156px;
-  height: 74px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  display: flex;
-  float: left;
-  margin-top: 20px;
-  margin-left: 17px;
-  cursor: pointer;
-  margin-bottom: 5px;
-}
-
-.lpha {
-  color: #7e8e9f;
-  font-size: 15px;
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  right: 0px;
-  top: 3px;
-  display: none;
-}
-
-.fq:hover .lpha {
-  display: block;
-}
-
-.addTO {
-  width: 169px;
-  height: 73px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 20px;
-  margin-left: 17px;
-  display: inline-block;
-}
-
-.fq:hover {
-  width: 156px;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.11);
-  border-radius: 4px;
-}
-
 .staff_member ul {
   width: 42px;
   height: 100%;
@@ -1365,25 +722,7 @@ fieldset[disabled] .ivu-input {
   color: #333;
 }
 
-.addMembers {
-  width: 100%;
-  height: auto;
-}
-
 .colour {
   color: #1ac1d6 !important;
-}
-
-.copy {
-  display: block;
-  width: 50px;
-  height: 32px;
-  text-align: center;
-  line-height: 30px;
-  border: 1px solid #dcdee2;
-  background-color: #f5f5f5;
-  border-bottom-right-radius: 4px;
-  border-top-right-radius: 4px;
-  cursor: pointer;
 }
 </style>
