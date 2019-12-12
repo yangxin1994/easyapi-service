@@ -65,12 +65,7 @@
                   <span v-else>{{ information.teamService.balance }}</span> 次
                   <span
                     v-if="information.teamService.balance < 101"
-                    @click.stop="
-                      renewalPage(
-                        information.service.serviceId,
-                        information.teamService.teamServiceId
-                      )
-                    "
+                    @click.stop="pay(information)"
                     style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                   >续费</span>
                 </span>
@@ -78,12 +73,7 @@
                   <span v-if="information.teamService.endTime <= currentTime">
                     <span style="color: #ff4a53;">已到期</span>
                     <span
-                      @click.stop="
-                        monthlyPage(
-                          information.service.serviceId,
-                          information.teamService.teamServiceId
-                        )
-                      "
+                      @click.stop="pay(information)"
                       style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                     >续费</span>
                   </span>
@@ -100,12 +90,7 @@
                     <span style="color: #ff4a53;" v-if="information.teamService.remainDay === 0">已到期</span>
                     <span
                       v-if="information.teamService.remainDay <= 30"
-                      @click.stop="
-                        monthlyPage(
-                          information.service.serviceId,
-                          information.teamService.teamServiceId
-                        )
-                      "
+                      @click.stop="pay(information)"
                       style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                     >续费</span>
                   </span>
@@ -318,12 +303,20 @@ export default {
         this.$router.push({ path: '/stat', query: { serviceId: serviceId } })
       }
     },
-    //次数续费
-    renewalPage(serviceId, teamServiceId) {
-      this.$router.push({
-        path: '/renew/count',
-        query: { serviceId: serviceId, teamServiceId: teamServiceId }
-      })
+    pay(info) {
+      let { service, teamService } = info
+      const { type, name, serviceId } = service
+      let num
+      if (type == 2) {
+        num = teamService.balance
+      } else if (type == 3) {
+        num = teamService.remainDay
+      }
+      let url = `http:///team.easyapi.com/services/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`
+      let a = document.createElement('a')
+      a.href = url
+      a.target = '_blank'
+      a.click()
     },
     //按月续费
     monthlyPage(serviceId, teamServiceId) {
@@ -352,7 +345,7 @@ export default {
         }
       })
         .then(res => {
-          console.log(res.data.content)
+          // console.log(res.data.content)
           this.teamInformation = res.data.content
         })
         .catch(error => {
