@@ -109,7 +109,6 @@
             this.CheckboxData = res.data.content
           })
           .catch(error => {
-            console.log(error)
             this.$Message.error(error.body.message)
           })
       },
@@ -132,7 +131,6 @@
             })
           })
           .catch(error => {
-            console.log(error)
           })
       },
       //修改白名单
@@ -155,7 +153,6 @@
             this.getWhiteList()
           })
           .catch(error => {
-            console.log(error)
             this.$Message.error(error.data.message)
           })
       },
