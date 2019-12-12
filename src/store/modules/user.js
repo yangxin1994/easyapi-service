@@ -83,7 +83,6 @@ const user = {
           commit("SET_USERTEAM", userInfoData.userTeam);
         })
         .catch(error => {
-          console.log(error.response);
         });
     }
   }
