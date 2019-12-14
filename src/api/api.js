@@ -1,14 +1,14 @@
 export const domainUrl = "https://api2.easyapi.com";
 
 //获取用户信息
-export const getAccountInfo = `https://account.easyapi.com/api/account`;
+export const getAccountInfo = `https://account-api.easyapi.com/api/account`;
 //获取团队列表
-export const getMyTeam = `https://account.easyapi.com/api/userTeam/mine`;
-export const getUserTeamList = `https://account.easyapi.com/api/user/teams`;
+export const getMyTeam = `https://account-api.easyapi.com/api/userTeam/mine`;
+export const getUserTeamList = `https://account-api.easyapi.com/api/user/teams`;
 //获取用户服务列表
 export const getUserService = `${domainUrl}/console/user/services`;
 //切换团队
-export const changeTeam = `https://account.easyapi.com/api/changeTeam`;
+export const changeTeam = `https://account-api.easyapi.com/api/changeTeam`;
 //获取我的白名单
 export const getWhiteList = `${domainUrl}/console/whiteList/check`;
 //修改白名单设置
