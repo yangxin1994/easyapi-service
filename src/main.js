@@ -2,14 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import iView from "iview";
+import ViewUI from "view-design";
 import axios from "./api/fetch";
 import moment from "moment";
 
-import "iview/dist/styles/iview.css";
+import "view-design/dist/styles/iview.css";
 import "./assets/iconfont/iconfont.css";
 
-Vue.use(iView);
+Vue.use(ViewUI);
 
 Vue.prototype.$ajax = axios;
 Vue.prototype.$moment = moment;
