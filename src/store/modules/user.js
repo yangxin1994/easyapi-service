@@ -65,25 +65,22 @@ const user = {
       axios({
         method: "GET",
         url: getAccountInfo
-      })
-        .then(res => {
-          let userInfoData = res.data;
-          commit("SET_ACCOUNTINFO", userInfoData);
-          commit("SET_USERID", userInfoData.id);
-          commit("SET_USERNAME", userInfoData.username);
-          commit("SET_NICKNAME", userInfoData.nickname);
-          commit("SET_PHOTO", userInfoData.photo);
-          commit("SET_MOBILE", userInfoData.mobile);
-          commit("SET_EMAIL", userInfoData.email);
-          if (userInfoData.team) {
-            commit("SET_TEAM", userInfoData.team);
-            commit("SET_TEAMNAME", userInfoData.team.name);
-            commit("SET_TEAMIMG", userInfoData.team.img);
-          }
-          commit("SET_USERTEAM", userInfoData.userTeam);
-        })
-        .catch(error => {
-        });
+      }).then(res => {
+        commit("SET_ACCOUNTINFO", res.data);
+        commit("SET_USERID", res.data.id);
+        commit("SET_USERNAME", res.data.username);
+        commit("SET_NICKNAME", res.data.nickname);
+        commit("SET_PHOTO", res.data.photo);
+        commit("SET_MOBILE", res.data.mobile);
+        commit("SET_EMAIL", res.data.email);
+        if (res.data.team) {
+          commit("SET_TEAM", res.data.team);
+          commit("SET_TEAMNAME", res.data.team.name);
+          commit("SET_TEAMIMG", res.data.team.img);
+        }
+        commit("SET_USERTEAM", res.data.userTeam);
+      }).catch(error => {
+      });
     }
   }
 };

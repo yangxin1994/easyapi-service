@@ -74,224 +74,199 @@
 </template>
 
 <script>
-import {
-  // getUserService,
-  // Surplus,
-  // Reminding,
-  memberList,
-  // modifyBalance,
-  addMembers
-} from '../../api/api'
-import Cookies from 'js-cookie'
+  import {
+    // getUserService,
+    // Surplus,
+    // Reminding,
+    memberList,
+    // modifyBalance,
+    addMembers
+  } from "../../api/api";
+  import Cookies from "js-cookie";
 
-export default {
-  name: 'myMember',
-  props: ['serviceId', 'teamServiceId'],
-  data() {
-    return {
-      show: false,
-      frame: false,
-      nickname: '',
-      authenticationToken: '',
-      MemberId: '',
-      Dmember: false,
-      notAdded: [],
-      member: [],
-      defaultMemberImg: '',
-      defaultMemberNickname: '',
-      defaultMemberType: ''
-    }
-  },
-  methods: {
-    //显示未添加成员
-    displayAdd() {
-      this.show = true
+  export default {
+    name: "myMember",
+    props: ["serviceId", "teamServiceId"],
+    data() {
+      return {
+        show: false,
+        frame: false,
+        nickname: "",
+        MemberId: "",
+        Dmember: false,
+        notAdded: [],
+        member: [],
+        defaultMemberImg: "",
+        defaultMemberNickname: "",
+        defaultMemberType: ""
+      };
     },
-    //添加成员
-    projectile(nickname, id) {
-      this.frame = true
-      this.nickname = nickname
-      this.userId = id
-    },
-    //添加成员
-    Sure() {
-      this.$ajax({
-        method: 'POST',
-        url: addMembers,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/json'
-        },
-        params: {
-          userId: this.userId,
-          serviceId: this.serviceId,
-          teamServiceId: this.teamServiceId
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
+    methods: {
+      //显示未添加成员
+      displayAdd() {
+        this.show = true;
+      },
+      //添加成员
+      projectile(nickname, id) {
+        this.frame = true;
+        this.nickname = nickname;
+        this.userId = id;
+      },
+      //添加成员
+      Sure() {
+        this.$ajax({
+          method: "POST",
+          url: addMembers,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          params: {
+            userId: this.userId,
+            serviceId: this.serviceId,
+            teamServiceId: this.teamServiceId
+          }
         })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-    //删除成员
-    deleteMember(id) {
-      this.Dmember = true
-      this.MemberId = id
-    },
-    prompt() {
-      this.$ajax({
-        method: 'DELETE',
-        url: addMembers + '/' + this.MemberId,
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-          this.getMemberList()
-          this.membersNotJoined()
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-    //获取服务的成员列表
-    getMemberList() {
-      this.$ajax({
-        method: 'get',
-        url: memberList + this.serviceId + '/users',
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          size: 100
-        }
-      })
-        .then(res => {
-          this.member = res.data.content.filter(item => {
-            return item.type !== '创建人'
+          .then(res => {
+            this.$Message.success(res.data.message);
+            this.getMemberList();
+            this.membersNotJoined();
           })
-          this.defaultMemberImg = res.data.content[0].user.photo
-          this.defaultMemberNickname = res.data.content[0].user.nickname
-          this.defaultMemberType = res.data.content[0].type
-        })
-        .catch(error => {
-          console.log(error)
-        })
+          .catch(error => {
+            console.log(error);
+            this.$Message.error(error.response.data.message);
+          });
+      },
+      //删除成员
+      deleteMember(id) {
+        this.Dmember = true;
+        this.MemberId = id;
+      },
+      prompt() {
+        this.$ajax.delete(addMembers + "/" + this.MemberId).then(res => {
+          this.$Message.success(res.data.message);
+          this.getMemberList();
+          this.membersNotJoined();
+        }).catch(error => {
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
+      },
+      //获取服务的成员列表
+      getMemberList() {
+        this.$ajax.get(memberList + this.serviceId + "/users", {
+          params: {
+            size: 100
+          }
+        }).then(res => {
+          this.member = res.data.content.filter(item => {
+            return item.type !== "创建人";
+          });
+          this.defaultMemberImg = res.data.content[0].user.photo;
+          this.defaultMemberNickname = res.data.content[0].user.nickname;
+          this.defaultMemberType = res.data.content[0].type;
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+      //未加入服务的成员列表
+      membersNotJoined() {
+        this.$ajax.get(memberList + this.serviceId + "/unJoinUsers").then(res => {
+          this.notAdded = res.data;
+          this.code = res.data.code;
+        }).catch(error => {
+          console.log(error);
+        });
+      }
     },
-    //未加入服务的成员列表
-    membersNotJoined() {
-      this.$ajax({
-        method: 'GET',
-        url: memberList + this.serviceId + '/unJoinUsers',
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
-          this.notAdded = res.data
-          this.code = res.data.code
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    created() {
+      this.getMemberList();
+      this.membersNotJoined();
+    },
+    mounted() {
     }
-  },
-  created() {
-    this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
-    this.getMemberList()
-    this.membersNotJoined()
-  },
-  mounted() {}
-}
+  };
 </script>
 <style lang="stylus">
-.staff {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
+  .staff {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
 
-.staff_member {
-  width: 156px;
-  height: 74px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  display: flex;
-  float: left;
-  margin-top: 20px;
-  margin-left: 17px;
-  cursor: pointer;
-  margin-bottom: 5px;
-}
+  .staff_member {
+    width: 156px;
+    height: 74px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    float: left;
+    margin-top: 20px;
+    margin-left: 17px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
 
-.staff_member ul {
-  width: 42px;
-  height: 100%;
-  margin-left: 10px;
-  list-style: none;
-  font-size: 14px;
-  color: #333;
-}
+  .staff_member ul {
+    width: 42px;
+    height: 100%;
+    margin-left: 10px;
+    list-style: none;
+    font-size: 14px;
+    color: #333;
+  }
 
-.fq:hover .lpha {
-  display: block;
-}
+  .fq:hover .lpha {
+    display: block;
+  }
 
-.fq:hover {
-  width: 156px;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.11);
-  border-radius: 4px;
-}
+  .fq:hover {
+    width: 156px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.11);
+    border-radius: 4px;
+  }
 
-.addMembers .ivu-modal-body {
-  height: 100px;
-  margin: 0px;
-  padding: 0px;
-}
+  .addMembers .ivu-modal-body {
+    height: 100px;
+    margin: 0px;
+    padding: 0px;
+  }
 
-.addMembers {
-  width: 100%;
-  height: auto;
-}
+  .addMembers {
+    width: 100%;
+    height: auto;
+  }
 
-.lpha {
-  color: #7e8e9f;
-  font-size: 15px;
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  right: 0px;
-  top: 3px;
-  display: none;
-}
+  .lpha {
+    color: #7e8e9f;
+    font-size: 15px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    display: none;
+  }
 
-.addTO {
-  width: 169px;
-  height: 73px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 20px;
-  margin-left: 17px;
-  display: inline-block;
-}
+  .addTO {
+    width: 169px;
+    height: 73px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 17px;
+    display: inline-block;
+  }
 
-.dialogue .ivu-modal-mask {
-  /* background-color:transparent; */
-  background-color: rgba(55, 55, 55, 0.1);
-  /* background-color:#000; */
-  /* opacity:0.1; */
-}
+  .dialogue .ivu-modal-mask {
+    /* background-color:transparent; */
+    background-color: rgba(55, 55, 55, 0.1);
+    /* background-color:#000; */
+    /* opacity:0.1; */
+  }
 
-.dialogue .ivu-modal-content {
-  box-shadow: none;
-}
+  .dialogue .ivu-modal-content {
+    box-shadow: none;
+  }
 </style>

@@ -55,14 +55,16 @@
         <Button
           @click="renew"
           style="	width:100px;height:40px;font-size:14px;background-color: #18c1d6;color: #fff;margin-top:40px"
-        >续费</Button>
+        >续费
+        </Button>
       </div>
     </div>
     <div class="btn">
       <Button
         @click="reviseTheBalance"
         style="	width:100px;height:40px;font-size:14px;background-color: #18c1d6;color: #fff;margin-left:120px;margin-top:10px"
-      >保存设置</Button>
+      >保存设置
+      </Button>
     </div>
     <div class="ea-warnBox">
       <p>备注：</p>
@@ -76,194 +78,168 @@
 </template>
 
 <script>
-import {
-  // getUserService,
-  // Surplus,
-  Reminding,
-  memberList,
-  modifyBalance
-} from '../../api/api'
-export default {
-  name: 'myBalance',
-  props: ['judgmentUnit', 'balance', 'remainDay', 'type', 'serviceId'],
-  data() {
-    return {
-      switch1: '', //提醒开关
-      balanceWarnNo: 0,
-      checkbox: [],
-      tipsMember: []
-    }
-  },
-  methods: {
-    change(status) {
-      if (status) {
-        this.$Message.info('开启提醒')
-      } else {
-        this.$Message.info('取消提醒')
-      }
+  import {
+    Reminding,
+    memberList,
+    modifyBalance
+  } from "../../api/api";
+
+  export default {
+    name: "myBalance",
+    props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId"],
+    data() {
+      return {
+        switch1: "", //提醒开关
+        balanceWarnNo: 0,
+        checkbox: [],
+        tipsMember: []
+      };
     },
-    //余额提醒上限
-    remindingOfTheBalance() {
-      this.$ajax({
-        method: 'GET',
-        url: Reminding + '/' + this.serviceId,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/x-www-form-urlencoded'
+    methods: {
+      change(status) {
+        if (status) {
+          this.$Message.info("开启提醒");
+        } else {
+          this.$Message.info("取消提醒");
         }
-      })
-        .then(res => {
+      },
+      //余额提醒上限
+      remindingOfTheBalance() {
+        this.$ajax.get(Reminding + "/" + this.serviceId, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }).then(res => {
           if (res.data.code === 0) {
-            // this.$Message.error("余额提醒上限暂无数据");
-            this.switch1 = false
+            this.switch1 = false;
           } else {
-            this.switch1 = true
-            this.balanceWarnNo = res.data.content.count
+            this.switch1 = true;
+            this.balanceWarnNo = res.data.content.count;
           }
-        })
-        .catch(error => {
-          console.log(error)
+        }).catch(error => {
+          console.log(error);
           if (error.data.code === -1) {
-            this.$Message.warning(error.data.message)
+            this.$Message.warning(error.data.message);
           } else {
-            this.$Message.error('数据错误')
+            this.$Message.error("数据错误");
+          }
+        });
+      },
+      //修改余额提醒设置
+      reviseTheBalance() {
+        let remindUserIds = this.checkbox.join(",");
+        this.$ajax.put(modifyBalance, {
+          params: {
+            remindUserIds: remindUserIds,
+            ifRemind: this.switch1,
+            serviceId: this.serviceId,
+            count: this.balanceWarnNo
           }
         })
-    },
-    //修改余额提醒设置
-    reviseTheBalance() {
-      let remindUserIds = this.checkbox.join(',')
-      this.$ajax({
-        method: 'PUT',
-        url: modifyBalance,
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          remindUserIds: remindUserIds,
-          ifRemind: this.switch1,
-          serviceId: this.serviceId,
-          count: this.balanceWarnNo
-        }
-      })
-        .then(res => {
-          this.$Message.success(res.data.message)
-        })
-        .catch(error => {
-          console.log(error)
-          this.$Message.error(error.response.data.message)
-        })
-    },
-    //提示人员
-    promptingStaff() {
-      this.$ajax({
-        method: 'get',
-        url: modifyBalance,
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          serviceId: this.serviceId
-        }
-      })
-        .then(res => {
-          this.selectedPersonnel = res.data.content
-          let code = res.data.code
+          .then(res => {
+            this.$Message.success(res.data.message);
+          })
+          .catch(error => {
+            console.log(error);
+            this.$Message.error(error.response.data.message);
+          });
+      },
+      //提示人员
+      promptingStaff() {
+        this.$ajax.get(modifyBalance, {
+          params: {
+            serviceId: this.serviceId
+          }
+        }).then(res => {
+          this.selectedPersonnel = res.data.content;
+          let code = res.data.code;
           if (code !== 0) {
             for (let i = 0; i < this.selectedPersonnel.length; i++) {
-              this.checkbox[i] = this.selectedPersonnel[i].remindUser.id
+              this.checkbox[i] = this.selectedPersonnel[i].remindUser.id;
             }
           }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    //余额提醒成员列表
-    getNmaeList() {
-      this.$ajax({
-        method: 'GET',
-        url: memberList + this.serviceId + '/users',
-        headers: {
-          authorization: this.authenticationToken
-        },
-        params: {
-          size: 100,
-          types: '创建人,管理员'
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+      //余额提醒成员列表
+      getNmaeList() {
+        this.$ajax.get(memberList + this.serviceId + "/users", {
+          params: {
+            size: 100,
+            types: "创建人,管理员"
+          }
+        }).then(res => {
+          this.tipsMember = res.data.content;
+        }).catch(error => {
+          console.log(error);
+        });
+      },
+      //续费跳转页面
+      renew() {
+        if (this.type == 3) {
+          this.$router.push({
+            path: "/renew/monthly",
+            query: { serviceId: this.serviceId, teamServiceId: this.tsID }
+          });
         }
-      })
-        .then(res => {
-          this.tipsMember = res.data.content
-        })
-        .catch(error => {
-          console.log(error)
-        })
+        if (this.type == 2 || this.type == 1 || this.type == 4) {
+          this.$router.push({
+            path: "/renew/count",
+            query: { serviceId: this.serviceId, teamServiceId: this.tsID }
+          });
+        }
+      }
     },
-    //续费跳转页面
-    renew() {
-      if (this.type == 3) {
-        this.$router.push({
-          path: '/renew/monthly',
-          query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-        })
-      }
-      if (this.type == 2 || this.type == 1 || this.type == 4) {
-        this.$router.push({
-          path: '/renew/count',
-          query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-        })
-      }
+    created() {
+      this.remindingOfTheBalance();
+      this.promptingStaff();
+      this.getNmaeList();
     }
-  },
-  created() {
-    this.remindingOfTheBalance()
-    this.promptingStaff()
-    this.getNmaeList()
-  }
-}
+  };
 </script>
 <style lang="stylus">
-.secret_balance {
-  width: 100%;
-  height: auto;
-  display: flex;
-}
+  .secret_balance {
+    width: 100%;
+    height: auto;
+    display: flex;
+  }
 
-.secret_balance .balance_remind {
-  width: 80%;
-  height: auto;
-}
+  .secret_balance .balance_remind {
+    width: 80%;
+    height: auto;
+  }
 
-.secret_balance .balance_remind p {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  padding-left: 20px;
-}
+  .secret_balance .balance_remind p {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 20px;
+  }
 
-.secret_balance .balance_remind p span {
-  color: #000000;
-  font-size: 14px;
-}
+  .secret_balance .balance_remind p span {
+    color: #000000;
+    font-size: 14px;
+  }
 
-.balance_btn {
-  width: 20%;
-  height: auto;
-}
+  .balance_btn {
+    width: 20%;
+    height: auto;
+  }
 
-.btn {
-  width: 100%;
-  height: 60px;
-}
+  .btn {
+    width: 100%;
+    height: 60px;
+  }
 
-.ea-warnBox {
-  width: 100%;
-  height: auto;
-  padding-left: 130px;
-}
+  .ea-warnBox {
+    width: 100%;
+    height: auto;
+    padding-left: 130px;
+  }
 
-.ea-warnBox p {
-  color: #999999;
-  font-size: 14px;
-}
+  .ea-warnBox p {
+    color: #999999;
+    font-size: 14px;
+  }
 </style>
