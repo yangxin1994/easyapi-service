@@ -62,10 +62,7 @@ const user = {
      * 获取用户信息
      */
     getUserInfo({ commit }) {
-      axios({
-        method: "GET",
-        url: getAccountInfo
-      }).then(res => {
+      axios.get(getAccountInfo, {}).then(res => {
         commit("SET_ACCOUNTINFO", res.data);
         commit("SET_USERID", res.data.id);
         commit("SET_USERNAME", res.data.username);

@@ -11,10 +11,10 @@
     <div class="h-right clearfix">
       <div class="fr menu-box">
         <div class="current-team-box">
-          <a id="showSerInfo" :class="{ active: showSerInfo }" @click="showSerInfoFn">
+          <a id="showTeamInfo" :class="{ active: showTeamInfo }">
             <span class="team-icon"></span>
           </a>
-          <div :class="{ active: showSerInfo }" class="current-team-info">
+          <div :class="{ active: showTeamInfo }" class="current-team-info">
             <h2 class="current-team-name lrPading-20">当前团队</h2>
             <div class="clear current-team-content lrPading-20">
               <img class="lf teams-img" :src="teamImg" alt />
@@ -33,7 +33,7 @@
                 <a
                   class="ea-team-item"
                   v-for="(item, index) in teamList"
-                  @click="tabTeamFn(item)"
+                  @click="changeTeam(item)"
                   :key="index"
                 >
                   <img :src="item.team.img + '!icon.jpg'" alt />
@@ -67,16 +67,13 @@
 </template>
 
 <script>
-import { getMyTeam, changeTeam } from '../api/api'
-import { ajaxSender } from '../api/fetch'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Header',
   data: function() {
     return {
-      selectedIndex: 5,
       isActive: false,
-      showSerInfo: false,
+      showTeamInfo: false,
       teamData: {
         photo: '--',
         name: '--'
@@ -98,16 +95,16 @@ export default {
       'click',
       e => {
         if (
-          e.target.id === 'showSerInfo' ||
+          e.target.id === 'showTeamInfo' ||
           e.target.className === 'team-icon'
         ) {
           this.isActive = false
-          this.showSerInfo = !this.showSerInfo
+          this.showTeamInfo = !this.showTeamInfo
         } else if (e.target.id === 'showPersonage') {
           this.isActive = !this.isActive
-          this.showSerInfo = false
+          this.showTeamInfo = false
         } else {
-          this.showSerInfo = false
+          this.showTeamInfo = false
           this.isActive = false
         }
       },
@@ -120,40 +117,8 @@ export default {
   watch: {},
 
   methods: {
-    showSerInfoFn() {
-      if (this.showSerInfo === true) {
-        this.getTeamList() //获取团队列表
-      }
-    },
-
-    getTeamList() {
-      ajaxSender({
-        url: getMyTeam,
-        method: 'GET',
-        data: {
-          page: 0,
-          size: 500
-        },
-        successfun: res => {
-          this.teamListData = res.content
-        }
-      })
-    },
-
-    jupmPage(url) {
-      this.$router.push(url)
-    },
-
-    tabTeamFn(item) {
-      this.$ajax({
-        url: changeTeam + '/' + item.team.id,
-        method: 'put'
-      }).then(res => {
-        if (res.data.code) {
-          this.$Message.info(res.data.message)
-          location.reload()
-        }
-      })
+    changeTeam(id) {
+      this.$store.dispatch('switchoverTeam', id)
     }
   }
 }

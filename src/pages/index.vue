@@ -223,11 +223,7 @@
   import {
     getUserService,
     Surplus
-    // Reminding,
-    // memberList
-    // modifyBalance
   } from "../api/api";
-  import Cookies from "js-cookie";
   import myMember from "./setting/member";
   import myBalance from "./setting/balance";
   import mySecret from "./setting/secret";
