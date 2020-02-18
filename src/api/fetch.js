@@ -5,6 +5,11 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
+    if (config.url.indexOf("/page/team") == -1) {
+      if (!Cookies.get("authenticationToken")) {
+        location.href = "https://account.easyapi.com/login"; // 如果没有authenticationToken存在
+      }
+    }
     config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
