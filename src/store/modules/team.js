@@ -36,7 +36,7 @@ const team = {
      * 切换团队
      */
     changeTeam({ dispatch }, id) {
-      axios.put(changeTeam + "/" + id, {}).then(res => {
+      changeTeam(id).then(res => {
         if (res.data.code === 1) {
           dispatch("getUserInfo");
           location.hash = "";

@@ -37,7 +37,8 @@
   </div>
 </template>
 <script>
-  import { getUserService, getWhiteList, updateWhiteList } from "../api/api";
+  import { getUserService } from "../api/api";
+  import { getWhiteList, updateWhiteList } from "../api/white-list";
   import Cookies from "js-cookie";
 
   export default {
@@ -49,8 +50,7 @@
         indeterminate: false,
         checkAll: false,
         checkAllGroup: [],
-        CheckboxData: [],
-        authenticationToken: ""
+        CheckboxData: []
       };
     },
     methods: {
@@ -85,7 +85,6 @@
             size: 100
           },
           headers: {
-            authorization: this.authenticationToken,
             "Content-Type": "application/json"
           }
         })
@@ -98,47 +97,29 @@
       },
       //获取白名单
       getWhiteList() {
-        this.$ajax({
-          url: getWhiteList,
-          method: "GET",
-          headers: {
-            authorization: this.authenticationToken
-          }
-        })
-          .then(res => {
-            this.IpWhiteListData = res.data.content.ips;
-            this.serverIds = res.data.content.whiteListId;
-            let serviceIdsData = res.data.content.serviceIds.split(",");
-
-            this.checkAllGroup = serviceIdsData.map(item => {
-              return Number(item);
-            });
-          })
-          .catch(error => {
+        getWhiteList().then(res => {
+          this.IpWhiteListData = res.data.content.ips;
+          this.serverIds = res.data.content.whiteListId;
+          let serviceIdsData = res.data.content.serviceIds.split(",");
+          this.checkAllGroup = serviceIdsData.map(item => {
+            return Number(item);
           });
+        }).catch(error => {
+        });
       },
       //修改白名单
       updateWhiteList() {
-        let obj = {};
-        obj.id = this.serverIds;
-        obj.serviceIds = this.checkAllGroup.join(",");
-        obj.ips = this.IpWhiteListData;
-        this.$ajax({
-          url: updateWhiteList,
-          method: "PUT",
-          headers: {
-            authorization: this.authenticationToken
-          },
-          data: obj
-        })
-          .then(res => {
-            this.$Message.success(res.data.message);
-            this.getMyServe();
-            this.getWhiteList();
-          })
-          .catch(error => {
-            this.$Message.error(error.data.message);
-          });
+        let data = {};
+        data.id = this.serverIds;
+        data.serviceIds = this.checkAllGroup.join(",");
+        data.ips = this.IpWhiteListData;
+        updateWhiteList(data).then(res => {
+          this.$Message.success(res.data.message);
+          this.getMyServe();
+          this.getWhiteList();
+        }).catch(error => {
+          this.$Message.error(error.data.message);
+        });
       },
       chooseWhiteListItem(id) {
         let index = this.checkAllGroup.findIndex(item => {
@@ -152,7 +133,6 @@
       }
     },
     created() {
-      this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
     },
     mounted() {
       document.title = "IP白名单 - EasyAPI";

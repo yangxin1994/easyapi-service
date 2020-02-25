@@ -118,7 +118,7 @@ export default {
 
   methods: {
     changeTeam(id) {
-      this.$store.dispatch('switchoverTeam', id)
+      this.$store.dispatch('changeTeam', id)
     }
   }
 }
