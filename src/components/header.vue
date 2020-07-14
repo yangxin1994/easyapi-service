@@ -24,6 +24,7 @@
                   <a href="https://team.easyapi.com/" class="ea-btn">账户</a>
                   <a href="https://team.easyapi.com/members" class="ea-btn">成员</a>
                   <a href="https://team.easyapi.com/orders" class="ea-btn">订单</a>
+                  <a href="https://team.easyapi.com/services" class="ea-btn">服务</a>
                 </div>
               </div>
             </div>
