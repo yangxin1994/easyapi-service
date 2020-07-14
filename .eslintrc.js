@@ -5,8 +5,8 @@ module.exports = {
   },
   extends: ["plugin:vue/essential", "@vue/prettier"],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": "off",
+    "no-debugger": "off",
     "prettier/prettier": [
       "off",
       {
@@ -14,7 +14,7 @@ module.exports = {
       }
     ],
     "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
-    "vue/no-unused-components": 'off'
+    "vue/no-unused-components": "off"
   },
   parserOptions: {
     parser: "babel-eslint"
