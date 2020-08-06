@@ -135,14 +135,12 @@
             serviceId: this.serviceId,
             count: this.balanceWarnNo
           }
-        })
-          .then(res => {
-            this.$Message.success(res.data.message);
-          })
-          .catch(error => {
-            console.log(error);
-            this.$Message.error(error.response.data.message);
-          });
+        }).then(res => {
+          this.$Message.success(res.data.message);
+        }).catch(error => {
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
       },
       //提示人员
       promptingStaff() {

@@ -28,7 +28,7 @@
           <li style="color: #1bc1d6;font-size:16px;">{{ staff.user.nickname }}</li>
           <li>{{ staff.type }}</li>
         </ul>
-        <Modal v-model="Dmember" @on-ok="prompt" :styles="{ top: '230px' }">
+        <Modal v-model="deleteModel" @on-ok="prompt" :styles="{ top: '230px' }">
           <p
             style="height: 100px;line-height:100px;text-align: center;color: #333;font-size: 16px"
           >确定删除成员{{ nickname }}吗?</p>
@@ -93,7 +93,7 @@
         frame: false,
         nickname: "",
         MemberId: "",
-        Dmember: false,
+        deleteModel: false,
         notAdded: [],
         member: [],
         defaultMemberImg: "",
@@ -125,20 +125,18 @@
             serviceId: this.serviceId,
             teamServiceId: this.teamServiceId
           }
-        })
-          .then(res => {
-            this.$Message.success(res.data.message);
-            this.getMemberList();
-            this.membersNotJoined();
-          })
-          .catch(error => {
-            console.log(error);
-            this.$Message.error(error.response.data.message);
-          });
+        }).then(res => {
+          this.$Message.success(res.data.message);
+          this.getMemberList();
+          this.membersNotJoined();
+        }).catch(error => {
+          console.log(error);
+          this.$Message.error(error.response.data.message);
+        });
       },
       //删除成员
       deleteMember(id) {
-        this.Dmember = true;
+        this.deleteModel = true;
         this.MemberId = id;
       },
       prompt() {

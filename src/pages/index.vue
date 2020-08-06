@@ -29,75 +29,75 @@
         >数据服务</span>
       </div>
       <div class="region">
-        <div class="region_block" v-for="(information, index) of teamInformation" :key="index">
-          <div class="information">
+        <div class="region_block" v-for="(item, index) of serviceList" :key="index">
+          <div class="service_box">
             <span
               @click="
                 jumpPagea(
-                  information.service.url,
-                  information.service.hasConsole,
-                  information.service.serviceId
+                  item.service.url,
+                  item.service.hasConsole,
+                  item.service.serviceId
                 )
               "
               class="information_img"
             >
-              <img style="width:80px;height: 80px" :src="information.service.img" alt/>
+              <img style="width:80px;height: 80px" :src="item.service.img" alt/>
               <span class="information_fase">
-                <strong style="font-size:16px;color:#333333;">{{ information.service.name }}</strong>
+                <strong style="font-size:16px;color:#333333;">{{ item.service.name }}</strong>
                 <span
                   class="block"
-                  v-if="information.service.type == '1'"
+                  v-if="item.service.type == '1'"
                   style="color: #24ac38;font-size:12px"
                 >免费</span>
                 <span
                   class="block"
                   v-if="
-                    information.service.type == '2' &&
-                      information.teamService !== null
+                    item.service.type == '2' &&
+                      item.teamService !== null
                   "
                   style="font-size:12px"
                 >
                   剩余
                   <span
-                    v-if="information.teamService.balance<100"
+                    v-if="item.teamService.balance<100"
                     style="color:#ff4a53;"
-                  >{{ information.teamService.balance }}</span>
-                  <span v-else>{{ information.teamService.balance }}</span> 次
+                  >{{ item.teamService.balance }}</span>
+                  <span v-else>{{ item.teamService.balance }}</span> 次
                   <span
-                    v-if="information.teamService.balance < 101"
-                    @click.stop="pay(information)"
+                    v-if="item.teamService.balance < 101"
+                    @click.stop="pay(item)"
                     style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                   >续费</span>
                 </span>
-                <span class="block" v-if="information.service.type == '3'" style="font-size:12px">
-                  <span v-if="information.teamService.endTime <= currentTime">
+                <span class="block" v-if="item.service.type == '3'" style="font-size:12px">
+                  <span v-if="item.teamService.endTime <= currentTime">
                     <span style="color: #ff4a53;">已到期</span>
                     <span
-                      @click.stop="pay(information)"
+                      @click.stop="pay(item)"
                       style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                     >续费</span>
                   </span>
-                  <span v-if="information.teamService.endTime > currentTime">
-                    <span style="color:#999;" v-if="information.teamService.remainDay !==0">
+                  <span v-if="item.teamService.endTime > currentTime">
+                    <span style="color:#999;" v-if="item.teamService.remainDay !==0">
                       剩余
                       <span
-                        v-if="information.teamService.remainDay<100"
+                        v-if="item.teamService.remainDay<100"
                         style="color:#ff4a53;"
-                      >{{ information.teamService.remainDay }}</span>
-                      <span v-else>{{ information.teamService.remainDay }}</span> 天
+                      >{{ item.teamService.remainDay }}</span>
+                      <span v-else>{{ item.teamService.remainDay }}</span> 天
                     </span>
 
-                    <span style="color: #ff4a53;" v-if="information.teamService.remainDay === 0">已到期</span>
+                    <span style="color: #ff4a53;" v-if="item.teamService.remainDay === 0">已到期</span>
                     <span
-                      v-if="information.teamService.remainDay <= 30"
-                      @click.stop="pay(information)"
+                      v-if="item.teamService.remainDay <= 30"
+                      @click.stop="pay(item)"
                       style="display: block;width:50px;height: 22px;background-color: #ff4a53;border-radius: 2px;color: #ffffff;line-height:22px;text-align: center;margin-top:5px;font-size: 12px"
                     >续费</span>
                   </span>
                 </span>
                 <span
                   class="block"
-                  v-if="information.service.type == '4'"
+                  v-if="item.service.type == '4'"
                   style="color: #999999;font-size: 12px"
                 >按需</span>
               </span>
@@ -107,41 +107,41 @@
               <ul class="ul_none">
                 <li
                   @click="
-                    ProjectileFrame(
-                      information.teamService.teamServiceId,
-                      information.service.serviceId,
-                      information.service.type,
+                    openDialog(
+                      item.teamService.teamServiceId,
+                      item.service.serviceId,
+                      item.service.type,
                       '秘钥管理',
                       0,
-                      information.team.teamId
+                      item.team.teamId
                     )
                   "
                 >秘钥管理</li>
                 <li
                   @click="
-                    ProjectileFrame(
-                      information.teamService.teamServiceId,
-                      information.service.serviceId,
-                      information.service.type,
+                    openDialog(
+                      item.teamService.teamServiceId,
+                      item.service.serviceId,
+                      item.service.type,
                       '成员管理',
                       1,
-                      information.team.teamId
+                      item.team.teamId
                     )
                   "
                 >成员管理</li>
                 <li
                   v-if="
-                    information.service.type !== 1 &&
-                      information.service.type !== 4
+                    item.service.type !== 1 &&
+                      item.service.type !== 4
                   "
                   @click="
-                    ProjectileFrame(
-                      information.teamService.teamServiceId,
-                      information.service.serviceId,
-                      information.service.type,
+                    openDialog(
+                      item.teamService.teamServiceId,
+                      item.service.serviceId,
+                      item.service.type,
                       '余额提醒',
                       2,
-                      information.team.teamId
+                      item.team.teamId
                     )
                   "
                 >余额提醒</li>
@@ -151,9 +151,9 @@
         </div>
 
         <div class="region_block">
-          <div class="information1">
+          <div class="market_box">
             <a href="https://market.easyapi.com">
-              <span class="lcon">
+              <span class="icon">
                 <Icon type="md-add"/>
               </span>
               <span class="information_word">服务市场</span>
@@ -166,8 +166,8 @@
           <strong>配置</strong>
         </p>
 
-        <div class="informationa" @click="jumpPage">
-          <span class="informationa_lcon">
+        <div class="configure_box" @click="jumpPage">
+          <span class="configure_box_icon">
             <img src="../assets/images/ip.png" alt/>
           </span>
           <strong
@@ -176,9 +176,9 @@
         </div>
       </div>
     </div>
-    <Modal :title="assignment" v-model="Close" :mask-closable="false" width="1081px" class="flk">
-      <div class="Modal_l">
-        <div class="Modal_right">
+    <Modal :title="assignment" v-model="dialog" :mask-closable="false" width="1081px" class="flk">
+      <div class="modal_dialog">
+        <div class="modal_right">
           <p :class="{ state: assignment === '秘钥管理' }" @click="stand('秘钥管理', 0)">
             <span class="fl" :class="{ f1: assignment === '秘钥管理' }" @click="stand('秘钥管理')"></span>
             <i class="iconfont" style="padding-left:20px">&#xe600;</i>&nbsp;&nbsp; 秘钥管理
@@ -197,15 +197,15 @@
           </p>
         </div>
         <!--秘钥管理-->
-        <div class="Modal_left" v-if="nowIndex === 0">
-          <mySecret :formValidate="formValidate" :tsID="tsID"></mySecret>
+        <div class="modal_left" v-if="nowIndex === 0">
+          <mySecret :formValidate="formValidate" :teamServiceId="teamServiceId"></mySecret>
         </div>
         <!--成员管理-->
-        <div class="Modal_left" v-if="nowIndex === 1">
-          <myMember :serviceId="serviceId" :teamServiceId="tsID"></myMember>
+        <div class="modal_left" v-if="nowIndex === 1">
+          <myMember :serviceId="serviceId" :teamServiceId="teamServiceId"></myMember>
         </div>
         <!--余额提醒-->
-        <div class="Modal_left" v-if="nowIndex === 2&this.type !== 1 && this.type !== 4">
+        <div class="modal_left" v-if="nowIndex === 2&this.type !== 1 && this.type !== 4">
           <myBalance
             :judgmentUnit="judgmentUnit"
             :balance="balance"
@@ -237,12 +237,12 @@
         defaultMemberType: "",
         tipsMember: "",
         authenticationToken: "",
-        teamInformation: [],
+        serviceList: [],
         startTime: "",
         currentTime: "",
-        Close: false,
+        dialog: false,
         assignment: "秘钥管理",
-        tsID: "",
+        teamServiceId: "",
         nowIndex: 0,
         isShow: false,
         changeKeyHint: false,
@@ -253,8 +253,6 @@
 
         balanceWarnNo: null,
         judgmentUnit: "",
-
-        Dmember: false,
 
         userId: "",
         show: false,
@@ -277,9 +275,9 @@
         this.assignment = pay;
         this.nowIndex = index;
       },
-      ProjectileFrame(teamServiceId, serviceId, type, name, index, teamId) {
-        this.Close = true;
-        this.tsID = teamServiceId;
+      openDialog(teamServiceId, serviceId, type, name, index, teamId) {
+        this.dialog = true;
+        this.teamServiceId = teamServiceId;
         this.serviceId = serviceId;
         this.type = type;
         this.assignment = name;
@@ -337,14 +335,14 @@
             size: 50
           }
         }).then(res => {
-          this.teamInformation = res.data.content;
+          this.serviceList = res.data.content;
         }).catch(error => {
           console.log(error);
         });
       },
       //获取秘钥信息
       secretKey() {
-        this.$ajax.get(Surplus + "/" + this.tsID, {
+        this.$ajax.get(Surplus + "/" + this.teamServiceId, {
           headers: {
             "Content-Type": "application/json"
           }
@@ -485,7 +483,7 @@
     margin-top: 10px;
   }
 
-  .information {
+  .service_box {
     width: 275px;
     height: 120px;
     background-color: #ffffff;
@@ -496,11 +494,11 @@
     margin-top: 10px;
   }
 
-  .information:hover {
+  .service_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
 
-  .information .information_img {
+  .service_box .information_img {
     width: 90%;
     height: 100%;
     padding-top: 20px;
@@ -508,7 +506,7 @@
     display: flex;
   }
 
-  .information .information_fase {
+  .service_box .information_fase {
     width: 65%;
     height: 100%;
     display: block;
@@ -527,7 +525,7 @@
     display: none;
   }
 
-  .information:hover .none {
+  .service_box:hover .none {
     display: block;
   }
 
@@ -561,7 +559,7 @@
     display: block;
   }
 
-  .information1 {
+  .market_box {
     width: 275px;
     height: 120px;
     background-color: #ffffff;
@@ -570,11 +568,11 @@
     margin-top: 10px;
   }
 
-  .information1:hover {
+  .market_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
 
-  .lcon {
+  .icon {
     width: 100%;
     height: 80px;
     line-height: 80px;
@@ -609,7 +607,7 @@
     border-bottom: 1px solid #e2e2e2;
   }
 
-  .configure .informationa {
+  .configure .configure_box {
     width: 275px;
     height: 235px;
     background-color: #ffffff;
@@ -618,11 +616,11 @@
     margin-top: 40px;
   }
 
-  .configure .informationa:hover {
+  .configure .configure_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
 
-  .configure .informationa .informationa_lcon {
+  .configure .configure_box .configure_box_icon {
     display: block;
     width: 100%;
     padding-top: 60px;
@@ -630,19 +628,19 @@
     text-align: center;
   }
 
-  .Modal_l {
+  .modal_dialog {
     width: 100%;
     height: auto;
     display: flex;
   }
 
-  .Modal_l .Modal_right {
+  .modal_dialog .modal_right {
     width: 17%;
     height: 500px;
     border-right: 1px solid #e5e5e5;
   }
 
-  .Modal_l .Modal_right p {
+  .modal_dialog .modal_right p {
     display: flex;
     width: 100%;
     height: 57px;
@@ -653,7 +651,7 @@
     cursor: pointer;
   }
 
-  .Modal_l .Modal_right p:hover {
+  .modal_dialog .modal_right p:hover {
     color: #1bc1d6;
   }
 
@@ -673,14 +671,14 @@
     background-color: #1bc1d6;
   }
 
-  .Modal_l .Modal_right p:hover .fl {
+  .modal_dialog .modal_right p:hover .fl {
     display: block;
     width: 4px;
     height: 56px;
     background-color: #1bc1d6;
   }
 
-  .Modal_l .Modal_left {
+  .modal_dialog .modal_left {
     width: 83%;
     height: auto;
   }

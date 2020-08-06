@@ -13,7 +13,7 @@
           type="button"
           class="copy"
           :data-clipboard-text="this.formValidate.appKey"
-          @click="copyappKey"
+          @click="copyAppKey"
         >复制
         </button>
       </FormItem>
@@ -30,7 +30,7 @@
           type="button"
           class="copy"
           :data-clipboard-text="this.formValidate.appSecret"
-          @click="copyappSecret"
+          @click="copyAppSecret"
         >复制
         </button>
         <span class="display" @click="showInputData">{{ btnContent }}</span>
@@ -65,12 +65,7 @@
 <script>
   import Clipboard from "clipboard";
   import {
-    // getUserService,
     Surplus
-    // Reminding
-    // memberList,
-    // modifyBalance,
-    // addMembers
   } from "../../api/api";
 
   export default {
@@ -101,7 +96,7 @@
     },
     methods: {
       //点击复制
-      copyappKey() {
+      copyAppKey() {
         var clipboard = new Clipboard(".copy");
         clipboard.on("success", () => {
           this.$Message.success("复制成功");
@@ -115,7 +110,7 @@
           clipboard.destroy();
         });
       },
-      copyappSecret() {
+      copyAppSecret() {
         var clipboard = new Clipboard(".copy");
         clipboard.on("success", () => {
           this.$Message.success("复制成功");
@@ -149,17 +144,15 @@
             "Content-Type": "application/json"
           },
           data: JSON.stringify(obj)
-        })
-          .then(res => {
-            this.formValidate.appKey = res.data.content.appKey;
-            this.formValidate.appSecret = res.data.content.appSecret;
-            this.secretKey();
-            this.$Message.success(res.data.message);
-          })
-          .catch(error => {
-            console.log(error);
-            this.$Message.error(error.data.message);
-          });
+        }).then(res => {
+          this.formValidate.appKey = res.data.content.appKey;
+          this.formValidate.appSecret = res.data.content.appSecret;
+          this.secretKey();
+          this.$Message.success(res.data.message);
+        }).catch(error => {
+          console.log(error);
+          this.$Message.error(error.data.message);
+        });
       },
       cancel() {
         this.changeKeyHint = false;
