@@ -1,7 +1,7 @@
 <template>
   <div class="mainPage">
     <div class="mainPage-title">
-      <span>{{ name }}</span>
+      <span>{{ showTeamName }}</span>
     </div>
     <div class="row">
       <div
@@ -265,6 +265,7 @@
         selectedPersonnel: "",
         teamId: "",
         name: "",
+        showTeamName: "",
         remainDay: "",
         formValidate: {
           appKey: "",
@@ -338,6 +339,7 @@
           }
         }).then(res => {
           this.teamInformation = res.data.content;
+          this.showTeamName = this.teamInformation[0].team.name
         }).catch(error => {
           console.log(error);
         });
