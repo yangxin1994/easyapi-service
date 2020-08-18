@@ -336,6 +336,7 @@
           }
         }).then(res => {
           this.serviceList = res.data.content;
+          this.name = this.serviceList[0].team.name
         }).catch(error => {
           console.log(error);
         });
@@ -358,11 +359,6 @@
       }
     },
     created() {
-      let that = this;
-      this.name = this.$route.query.name;
-      setTimeout(function() {
-        that.name = localStorage.getItem("name");
-      }, 1000);
     },
     mounted() {
       document.title = "服务中心 - EasyAPI";
