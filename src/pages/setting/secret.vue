@@ -166,6 +166,9 @@
   };
 </script>
 <style lang="stylus">
+  .fk .ivu-form-item-content {
+    display: flex;
+  }
   .copy {
     display: block;
     width: 50px;
