@@ -1,4 +1,3 @@
-import axios from "@/api/request";
 import { getUserTeamList, changeTeam } from "@/api/account";
 
 const team = {
@@ -26,7 +25,7 @@ const team = {
 
   actions: {
     getTeamList({ commit }) {
-      axios.get(getUserTeamList, {}).then(res => {
+      getUserTeamList().then(res => {
         commit("SET_TEAMLIST", res.data.content);
       }).catch(error => {
         console.log(error);

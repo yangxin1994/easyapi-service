@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
-import axios from "@/api/request";
-import { getAccountInfo } from "@/api/account";
+import { getAccount } from "@/api/account";
 
 const user = {
   state: {
@@ -62,7 +61,7 @@ const user = {
      * 获取用户信息
      */
     getUserInfo({ commit }) {
-      axios.get(getAccountInfo, {}).then(res => {
+      getAccount().then(res => {
         commit("SET_ACCOUNTINFO", res.data);
         commit("SET_USERID", res.data.id);
         commit("SET_USERNAME", res.data.username);

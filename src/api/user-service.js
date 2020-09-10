@@ -38,4 +38,4 @@ export const createUserService = (data) => axios.post(`${baseUrl}/console/user-s
  **
  * @see https://www.easyai.com
  */
-export const userService = (data) => axios.delete(`${baseUrl}/console/whiteList`, data);
+export const deleteUserService = (id) => axios.delete(`${baseUrl}/console/user-service/${id}`, data);
