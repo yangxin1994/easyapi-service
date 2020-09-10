@@ -34,7 +34,7 @@
                 <a
                   class="ea-team-item"
                   v-for="(item, index) in teamList"
-                  @click="changeTeam(item)"
+                  @click="changeTeam(item.team.id)"
                   :key="index"
                 >
                   <img :src="item.team.img + '!icon.jpg'" alt />
@@ -119,7 +119,7 @@ export default {
 
   methods: {
     changeTeam(id) {
-      this.$store.dispatch('changeTeam', id)
+      this.$store.dispatch('switchoverTeam', id)
     }
   }
 }

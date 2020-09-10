@@ -84,6 +84,7 @@
                       0,
                       item.team.teamId,
                       item.teamService.remainDay,
+                      item.service.name
                     )
                   "
                 >秘钥管理</li>
@@ -97,6 +98,7 @@
                       1,
                       item.team.teamId,
                       item.teamService.remainDay,
+                      item.service.name
                     )
                   "
                 >成员管理</li>
@@ -114,6 +116,7 @@
                       2,
                       item.team.teamId,
                       item.teamService.remainDay,
+                      item.service.name
                     )
                   "
                 >余额提醒</li>
@@ -167,6 +170,7 @@
             :remainDay="remainDay"
             :type="type"
             :serviceId="serviceId"
+            :name="name"
           ></myBalance>
         </div>
       </div>
@@ -198,6 +202,7 @@ export default {
              judgmentUnit: "",
              teamId: "",
              remainDay: "",
+             name:"",
              formValidate: {
                 appKey: "",
                 appSecret: ""
@@ -209,7 +214,7 @@ export default {
         this.assignment = pay;
         this.nowIndex = index;
       },
-        openDialog(teamServiceId, serviceId, type, name, index, teamId,remainDay) {
+        openDialog(teamServiceId, serviceId, type, name, index, teamId,remainDay,serviceName) {
         this.dialog = true;
         this.teamServiceId = teamServiceId;
         this.serviceId = serviceId;
@@ -218,6 +223,7 @@ export default {
         this.nowIndex = index;
         this.teamId = teamId;
         this.remainDay = remainDay;
+        this.name = serviceName;
         this.secretKey();
       },
       jumpPagea(URL, hasConsole, serviceId) {
@@ -234,11 +240,10 @@ export default {
         if (type == 2) {
           num = teamService.balance;
         } else if (type == 3) {
-          num = teamService.remainDay;
-          
+          num = teamService.remainDay; 
         }
-        let url = `http://localhost:8080/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
-        // let url = `http:///team.easyapi.com/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
+        // let url = `http://localhost:8080/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
+        let url = `http:///team.easyapi.com/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
         let a = document.createElement("a");
         a.href = url;
         a.target = "_blank";

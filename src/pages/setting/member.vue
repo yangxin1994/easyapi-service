@@ -169,7 +169,7 @@
       //未加入服务的成员列表
       membersNotJoined() {
         this.$ajax.get(memberList + this.serviceId + "/unJoinUsers").then(res => {
-          this.notAdded = res.data;
+          this.notAdded = res.data.content;
           this.code = res.data.code;
         }).catch(error => {
           console.log(error);

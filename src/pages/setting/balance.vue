@@ -86,7 +86,7 @@
 
   export default {
     name: "myBalance",
-    props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId"],
+    props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId","name"],
     data() {
       return {
         switch1: "", //提醒开关
@@ -175,18 +175,18 @@
       },
       //续费跳转页面
       renew() {
-        if (this.type == 3) {
-          this.$router.push({
-            path: "/renew/monthly",
-            query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-          });
+        let num;
+        if (this.type == 2) {
+          num = this.balance;
+        } else if (this.type == 3) {
+          num = this.remainDay; 
         }
-        if (this.type == 2 || this.type == 1 || this.type == 4) {
-          this.$router.push({
-            path: "/renew/count",
-            query: { serviceId: this.serviceId, teamServiceId: this.tsID }
-          });
-        }
+        // let url = `http://localhost:8080/service/pay?type=${this.type}&serviceId=${this.serviceId}&serviceName=${this.name}&num=${num}`;
+        let url = `http:///team.easyapi.com/service/pay?type=${this.type}&serviceId=${this.serviceId}&serviceName=${this.name}&num=${num}`;
+        let a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.click();
       }
     },
     created() {

@@ -35,8 +35,8 @@ const team = {
     /**
      * 切换团队
      */
-    changeTeam({ dispatch }, id) {
-      changeTeam(id).then(res => {
+    switchoverTeam({dispatch, commit, state}, teamId) {
+      changeTeam(teamId).then(res => {
         if (res.data.code === 1) {
           dispatch("getUserInfo");
           location.hash = "";
