@@ -22,8 +22,8 @@
           </div>
         </div>
       </div>
-      <div class="inpit_l">
-        <Input v-model="IpWhiteListData" type="textarea" placeholder="请输入白名单IP..." class="inpuit"/>
+      <div class="white-list_ip">
+        <Input v-model="IpWhiteListData" type="textarea" placeholder="请输入白名单IP..." class="white-list_ip_input"/>
         <ul>
           <li>格式说说明；</li>
           <li>一行写一个IP，如：</li>
@@ -37,9 +37,8 @@
   </div>
 </template>
 <script>
-  import { getUserService } from "../api/api";
+  import { getUserServiceList } from "../api/user-service";
   import { getWhiteList, updateWhiteList } from "../api/white-list";
-  import Cookies from "js-cookie";
 
   export default {
     data() {
@@ -64,36 +63,16 @@
         this.checkAll = false;
         this.checkAllGroup = [];
       },
-      checkAllGroupChange(data) {
-        if (data.length === this.CheckboxData.length) {
-          this.indeterminate = false;
-          this.checkAll = true;
-        } else if (data.length > 0) {
-          this.indeterminate = true;
-          this.checkAll = false;
-        } else {
-          this.indeterminate = false;
-          this.checkAll = false;
-        }
-      },
       //获取我的服务
       getMyService() {
-        this.$ajax({
-          method: "GET",
-          url: getUserService,
-          params: {
-            size: 100
-          },
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-          .then(res => {
-            this.CheckboxData = res.data.content;
-          })
-          .catch(error => {
-            this.$Message.error(error.body.message);
-          });
+        let params = {
+          size: 100
+        };
+        getUserServiceList(params).then(res => {
+          this.CheckboxData = res.data.content;
+        }).catch(error => {
+          this.$Message.error(error.body.message);
+        });
       },
       //获取白名单
       getWhiteList() {
@@ -208,44 +187,31 @@
     font-size: 14px;
   }
 
-  .CheckboxGroup {
-    width: 100%;
-    height: auto;
-    margin-top: 20px;
-  }
 
-  .Checkbox {
-    width: 24%;
-    height: 45px;
-    color: #323232;
-    font-size: 14px;
-  }
-
-  .inpit_l {
+  .white-list_ip {
     width: 100%;
     height: auto;
     display: flex;
   }
 
-  .inpuit {
-    width: 600px;
-    height: 200px;
-    background-color: #ffffff;
-    border-radius: 2px;
-    border: solid 1px #dddddd;
-  }
-
-  .inpit_l ul {
+  .white-list_ip ul {
     width: 50%;
     height: auto;
     padding-left: 10px;
   }
 
-  .inpit_l ul li {
+  .white-list_ip ul li {
     height: 20px;
     color: #999999;
     font-size: 12px;
     list-style: none;
+  }
+
+  .white-list_ip_input {
+    width: 600px;
+    height: 200px;
+    background-color: #ffffff;
+    border-radius: 2px;
   }
 
   .btn {

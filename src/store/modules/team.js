@@ -1,4 +1,4 @@
-import axios from "@/api/fetch";
+import axios from "@/api/request";
 import { getUserTeamList, changeTeam } from "@/api/account";
 
 const team = {
@@ -35,7 +35,7 @@ const team = {
     /**
      * 切换团队
      */
-    switchoverTeam({dispatch, commit, state}, teamId) {
+    switchoverTeam({ dispatch, commit, state }, teamId) {
       changeTeam(teamId).then(res => {
         if (res.data.code === 1) {
           dispatch("getUserInfo");

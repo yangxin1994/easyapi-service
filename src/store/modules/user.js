@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import axios from "@/api/fetch";
+import axios from "@/api/request";
 import { getAccountInfo } from "@/api/account";
 
 const user = {

@@ -1,7 +1,7 @@
 <template>
   <div class="mainPage">
     <div class="mainPage-title">
-      <span>{{ name }}</span>
+      <span>{{ teamName }}</span>
     </div>
     <div class="row">
       <div
@@ -47,33 +47,14 @@
 </template>
 
 <script>
-  import ServiceItem from "./moudles/item"
+  import { mapGetters } from "vuex";
+  import ServiceItem from "./moudles/item";
 
   export default {
-    components: { ServiceItem},
+    components: { ServiceItem },
     data() {
       return {
-        defaultMemberImg: "",
-        defaultMemberNickname: "",
-        defaultMemberType: "",
-        tipsMember: "",
-        authenticationToken: "",
-        startTime: "",
-        isShow: false,
-        changeKeyHint: false,
-        serveType: null,
-        type: "",
-
-        balanceWarnNo: null,
-
-        userId: "",
-        show: false,
-        code: "",
-        MemberId: "",
-        category:"",
-        titleSubscript: "",
-        selectedPersonnel: "",
-        name: "",
+        category: "",
       };
     },
     methods: {
@@ -81,23 +62,16 @@
       jumpPage() {
         this.$router.push({ path: "/white-list" });
       },
-      //按月续费
-      // monthlyPage(serviceId, teamServiceId) {
-      //   this.$router.push({
-      //     path: "/renew/monthly",
-      //     query: { serviceId: serviceId, teamServiceId: teamServiceId }
-      //   });
-      // },
-
       //服务列表
       colorSwitching(category) {
-         this.category = category;
-      },
-    },
-    created() {
+        this.category = category;
+      }
     },
     mounted() {
       document.title = "服务中心 - EasyAPI";
+    },
+    computed: {
+      ...mapGetters(["teamName"])
     }
   };
 </script>
@@ -106,15 +80,18 @@
     height: 100px;
     margin: 0px;
   }
+
   .row .ivu-tabs-mini .ivu-tabs-nav-container {
     padding-top: 60px;
     height: 100px;
   }
+
   .row .ivu-tabs-tab {
     width: 100px;
     font-size: 16px;
     text-align: center;
   }
+
   .row .ivu-tabs-ink-bar {
     background-color: #fff;
   }
@@ -124,12 +101,14 @@
     width: 100%;
     height: auto;
   }
+
   .mainPage .mainPage-title {
     width: 100%;
     height: 80px;
     background-color: #ecf1f5;
   }
- .mainPage .mainPage-title span {
+
+  .mainPage .mainPage-title span {
     width: 1200px;
     height: 80px;
     line-height: 80px;
@@ -138,17 +117,20 @@
     display: block;
     color: #333333;
   }
+
   .row {
     width: 1200px;
     height: auto;
     margin: 0 auto;
   }
+
   .configure {
     width: 100%;
     height: auto;
     margin-bottom: 50px;
   }
- .configure .configure_p {
+
+  .configure .configure_p {
     width: 100%;
     height: 50px;
     font-size: 18px;
@@ -157,6 +139,7 @@
     margin-top: 40px;
     border-bottom: 1px solid #e2e2e2;
   }
+
   .configure .configure_box {
     width: 275px;
     height: 235px;
@@ -165,9 +148,11 @@
     cursor: pointer;
     margin-top: 40px;
   }
+
   .configure .configure_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
+
   .configure .configure_box .configure_box_icon {
     display: block;
     width: 100%;
@@ -175,6 +160,7 @@
     height: 175px;
     text-align: center;
   }
+
   .colour {
     color: #1ac1d6 !important;
   }

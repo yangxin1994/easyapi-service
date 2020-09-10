@@ -61,7 +61,7 @@
     </div>
     <div class="btn">
       <Button
-        @click="reviseTheBalance"
+        @click="updateBalanceRemind"
         style="	width:100px;height:40px;font-size:14px;background-color: #18c1d6;color: #fff;margin-left:120px;margin-top:10px"
       >保存设置
       </Button>
@@ -79,14 +79,15 @@
 
 <script>
   import {
-    Reminding,
-    memberList,
-    modifyBalance
+    updateBalanceRemind, getBalanceRemind, getBalanceRemindList
   } from "../../api/api";
+  import {
+    getServiceUserList
+  } from "../../api/user-service";
 
   export default {
     name: "myBalance",
-    props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId","name"],
+    props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId", "name"],
     data() {
       return {
         switch1: "", //提醒开关
@@ -104,12 +105,8 @@
         }
       },
       //余额提醒上限
-      remindingOfTheBalance() {
-        this.$ajax.get(Reminding + "/" + this.serviceId, {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }).then(res => {
+      getBalanceRemind() {
+        getBalanceRemind(this.serviceId).then(res => {
           if (res.data.code === 0) {
             this.switch1 = false;
           } else {
@@ -126,16 +123,14 @@
         });
       },
       //修改余额提醒设置
-      reviseTheBalance() {
-        let remindUserIds = this.checkbox.join(",");
-        this.$ajax.put(modifyBalance, {
-          params: {
-            remindUserIds: remindUserIds,
-            ifRemind: this.switch1,
-            serviceId: this.serviceId,
-            count: this.balanceWarnNo
-          }
-        }).then(res => {
+      updateBalanceRemind() {
+        let data = {
+          remindUserIds: this.checkbox.join(","),
+          ifRemind: this.switch1,
+          serviceId: this.serviceId,
+          count: this.balanceWarnNo
+        };
+        updateBalanceRemind(data).then(res => {
           this.$Message.success(res.data.message);
         }).catch(error => {
           console.log(error);
@@ -143,12 +138,11 @@
         });
       },
       //提示人员
-      promptingStaff() {
-        this.$ajax.get(modifyBalance, {
-          params: {
-            serviceId: this.serviceId
-          }
-        }).then(res => {
+      getBalanceRemindList() {
+        let params = {
+          serviceId: this.serviceId
+        };
+        getBalanceRemindList(params).then(res => {
           this.selectedPersonnel = res.data.content;
           let code = res.data.code;
           if (code !== 0) {
@@ -161,13 +155,12 @@
         });
       },
       //余额提醒成员列表
-      getNmaeList() {
-        this.$ajax.get(memberList + this.serviceId + "/users", {
-          params: {
-            size: 100,
-            types: "创建人,管理员"
-          }
-        }).then(res => {
+      getServiceUserList() {
+        let params = {
+          size: 100,
+          types: "创建人,管理员"
+        };
+        getServiceUserList(this.serviceId, params).then(res => {
           this.tipsMember = res.data.content;
         }).catch(error => {
           console.log(error);
@@ -179,10 +172,9 @@
         if (this.type == 2) {
           num = this.balance;
         } else if (this.type == 3) {
-          num = this.remainDay; 
+          num = this.remainDay;
         }
-        // let url = `http://localhost:8080/service/pay?type=${this.type}&serviceId=${this.serviceId}&serviceName=${this.name}&num=${num}`;
-        let url = `http:///team.easyapi.com/service/pay?type=${this.type}&serviceId=${this.serviceId}&serviceName=${this.name}&num=${num}`;
+        let url = `https://team.easyapi.com/service/pay?type=${this.type}&serviceId=${this.serviceId}&serviceName=${this.name}&num=${num}`;
         let a = document.createElement("a");
         a.href = url;
         a.target = "_blank";
@@ -190,9 +182,9 @@
       }
     },
     created() {
-      this.remindingOfTheBalance();
-      this.promptingStaff();
-      this.getNmaeList();
+      this.getBalanceRemind();
+      this.getBalanceRemindList();
+      this.getServiceUserList();
     }
   };
 </script>

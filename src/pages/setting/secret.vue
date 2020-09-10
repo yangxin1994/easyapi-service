@@ -65,8 +65,8 @@
 <script>
   import Clipboard from "clipboard";
   import {
-    Surplus
-  } from "../../api/api";
+    resetKey
+  } from "../../api/team-service";
 
   export default {
     name: "mySecret",
@@ -134,20 +134,9 @@
         }
       },
       ok() {
-        let obj = {};
-        obj.id = this.tsID;
-        this.$ajax({
-          method: "put",
-          url: Surplus,
-          headers: {
-            authorization: this.authenticationToken,
-            "Content-Type": "application/json"
-          },
-          data: JSON.stringify(obj)
-        }).then(res => {
+        resetKey(this.teamServiceId).then(res => {
           this.formValidate.appKey = res.data.content.appKey;
           this.formValidate.appSecret = res.data.content.appSecret;
-          this.secretKey();
           this.$Message.success(res.data.message);
         }).catch(error => {
           console.log(error);
@@ -157,7 +146,6 @@
       cancel() {
         this.changeKeyHint = false;
       },
-
       //修改秘钥
       modificationKey() {
         this.changeKeyHint = true;
@@ -169,6 +157,7 @@
   .fk .ivu-form-item-content {
     display: flex;
   }
+
   .copy {
     display: block;
     width: 50px;

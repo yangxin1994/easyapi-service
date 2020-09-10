@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 // 添加请求拦截器
 axios.interceptors.request.use(
-  function (config) {
+  function(config) {
     if (config.url.indexOf("/page/team") == -1) {
       if (!Cookies.get("authenticationToken")) {
         location.href = "https://account.easyapi.com/login"; // 如果没有authenticationToken存在
@@ -49,9 +49,6 @@ axios.interceptors.response.use(
     } else if (error.response.data.code === -3) {
       // 处理-3团队账户余额不足
       router.push(`/unavailable`);
-    } else if (error.response.data.code === -1) {
-      // 处理-3非法团队
-      // window.location.href = "https://team.easyapi.com";
     } else {
       return Promise.reject(error);
     }

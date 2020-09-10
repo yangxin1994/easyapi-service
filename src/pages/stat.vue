@@ -56,7 +56,8 @@
   // 导入chart组件
   var myvue = {};
   import XChart from "../components/chart/highcharts";
-  import { interfaceStatistics, getUserService } from "../api/api";
+  import { getServiceEveryday } from "../api/api";
+  import { getUserServiceList } from "../api/user-service";
   import Cookies from "js-cookie";
 
   export default {
@@ -193,17 +194,13 @@
       },
       //接口统计
       getTimeAndDate() {
-        this.$ajax.get(interfaceStatistics, {
-          headers: {
-            authorization: this.authenticationToken
-          },
-          params: {
-            serviceId: this.serviceId,
-            startDay: this.startDay + " 00:00:00",
-            endDay: this.endDay + " 00:00:00",
-            size: 500
-          }
-        }).then(res => {
+        let params = {
+          serviceId: this.serviceId,
+          startDay: this.startDay + " 00:00:00",
+          endDay: this.endDay + " 00:00:00",
+          size: 500
+        };
+        getServiceEveryday(params).then(res => {
           this.data[0].data = [];
           this.statisticsTimes = res.data.content;
           if (res.data.code !== 0) {
@@ -219,16 +216,11 @@
       },
       //我的服务
       getUserService() {
-        this.$ajax.get(getUserService, {
-          headers: {
-            authorization: this.authenticationToken,
-            "Content-Type": "application/json"
-          },
-          params: {
-            serviceCategory: this.category,
-            size: 50
-          }
-        }).then(res => {
+        let params = {
+          serviceCategory: this.category,
+          size: 50
+        };
+        getUserServiceList(params).then(res => {
           this.teamInformation = res.data.content;
         }).catch(error => {
           console.log(error);
