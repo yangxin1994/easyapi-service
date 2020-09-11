@@ -1,7 +1,7 @@
 <template>
   <div class="mainPage">
     <div class="mainPage-title">
-      <span>{{ name }}</span>
+      <span>{{ teamName }}</span>
     </div>
     <div class="row">
       <div
@@ -48,6 +48,7 @@
 
 <script>
   import ServiceItem from "./moudles/item"
+  import {mapGetters} from 'vuex'
 
   export default {
     components: { ServiceItem},
@@ -73,7 +74,7 @@
         category:"",
         titleSubscript: "",
         selectedPersonnel: "",
-        name: "",
+        name:"",
       };
     },
     methods: {
@@ -98,7 +99,11 @@
     },
     mounted() {
       document.title = "服务中心 - EasyAPI";
-    }
+    },
+    computed: {
+    ...mapGetters(['photo', 'team', 'teamName', 'teamImg', 'teamList'])
+  },
+
   };
 </script>
 <style>
