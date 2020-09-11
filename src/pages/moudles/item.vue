@@ -1,10 +1,10 @@
 <template>
-    <div class="region">
-        <div class="region_block" v-for="(item, index) of serviceList" :key="index">
-          <div class="service_box">
+  <div class="region">
+    <div class="region_block" v-for="(item, index) of serviceList" :key="index">
+      <div class="service_box">
             <span
               @click="
-                jumpPagea(
+                jumpPage(
                   item.service.url,
                   item.service.hasConsole,
                   item.service.serviceId
@@ -71,7 +71,7 @@
                 >按需</span>
               </span>
             </span>
-            <span class="none">
+        <span class="none">
               <span class="none_j">...</span>
               <ul class="ul_none">
                 <li
@@ -122,35 +122,35 @@
                 >余额提醒</li>
               </ul>
             </span>
-          </div>
-        </div>
-        <div class="region_block">
-          <div class="market_box">
-            <a href="https://market.easyapi.com">
+      </div>
+    </div>
+    <div class="region_block">
+      <div class="market_box">
+        <a href="https://market.easyapi.com">
               <span class="icon">
                 <Icon type="md-add"/>
               </span>
-              <span class="information_word">服务市场</span>
-            </a>
-          </div>
-        </div> 
-        <Modal :title="assignment" v-model="dialog" :mask-closable="false" width="1081px" class="flk">
+          <span class="information_word">服务市场</span>
+        </a>
+      </div>
+    </div>
+    <Modal :title="dialogTitle" v-model="dialog" :mask-closable="false" width="1081px" class="flk">
       <div class="modal_dialog">
         <div class="modal_right">
-          <p :class="{ state: assignment === '秘钥管理' }" @click="stand('秘钥管理', 0)">
-            <span class="fl" :class="{ f1: assignment === '秘钥管理' }" @click="stand('秘钥管理')"></span>
+          <p :class="{ state: dialogTitle === '秘钥管理' }" @click="stand('秘钥管理', 0)">
+            <span class="fl" :class="{ f1: dialogTitle === '秘钥管理' }" @click="stand('秘钥管理')"></span>
             <i class="iconfont" style="padding-left:20px">&#xe600;</i>&nbsp;&nbsp; 秘钥管理
           </p>
-          <p :class="{ state: assignment === '成员管理' }" @click="stand('成员管理', 1)">
-            <span class="fl" :class="{ f1: assignment === '成员管理' }" @click="stand('成员管理')"></span>
+          <p :class="{ state: dialogTitle === '成员管理' }" @click="stand('成员管理', 1)">
+            <span class="fl" :class="{ f1: dialogTitle === '成员管理' }" @click="stand('成员管理')"></span>
             <i class="iconfont" style="padding-left:20px">&#xe61c;</i>&nbsp;&nbsp; 成员管理
           </p>
           <p
-            :class="{ state: assignment === '余额提醒' }"
+            :class="{ state: dialogTitle === '余额提醒' }"
             @click="stand('余额提醒', 2)"
             v-if="this.type !== 1 && this.type !== 4"
           >
-            <span class="fl" :class="{ f1: assignment === '余额提醒' }" @click="stand('余额提醒')"></span>
+            <span class="fl" :class="{ f1: dialogTitle === '余额提醒' }" @click="stand('余额提醒')"></span>
             <i class="iconfont" style="padding-left:20px">&#xe69e;</i>&nbsp;&nbsp; 余额提醒
           </p>
         </div>
@@ -175,58 +175,64 @@
         </div>
       </div>
     </Modal>
-    </div>
+  </div>
 </template>
 <script>
- import myMember from "../setting/member";
- import myBalance from "../setting/balance";
- import mySecret from "../setting/secret";
-import {
-    getUserService,
+  import myMember from "../setting/member";
+  import myBalance from "../setting/balance";
+  import mySecret from "../setting/secret";
+  import {
     Surplus
   } from "../../api/api";
-export default {
-    props:["category"],
-    components: { myMember, myBalance, mySecret},
-    data(){
-        return{
-             assignment: "秘钥管理",
-             nowIndex: 0,
-             dialog: false,
-             serviceList: [],
-             currentTime: "",
-             teamServiceId: "",
-             balance: "",
-             serviceId: "",
-             type: "",
-             judgmentUnit: "",
-             teamId: "",
-             remainDay: "",
-             name:"",
-             formValidate: {
-                appKey: "",
-                appSecret: ""
-            }
+  import {
+    getUserServiceList
+  } from "../../api/user-service";
+  import {
+    getTeamService
+  } from "../../api/team-service";
+
+  export default {
+    props: ["category"],
+    components: { myMember, myBalance, mySecret },
+    data() {
+      return {
+        dialogTitle: "秘钥管理",
+        nowIndex: 0,
+        dialog: false,
+        serviceList: [],
+        currentTime: "",
+        teamServiceId: "",
+        balance: "",
+        serviceId: "",
+        type: "",
+        judgmentUnit: "",
+        teamId: "",
+        remainDay: "",
+        name: "",
+        formValidate: {
+          appKey: "",
+          appSecret: ""
         }
+      };
     },
-    methods:{
-        stand(pay, index) {
-        this.assignment = pay;
+    methods: {
+      stand(pay, index) {
+        this.dialogTitle = pay;
         this.nowIndex = index;
       },
-        openDialog(teamServiceId, serviceId, type, name, index, teamId,remainDay,serviceName) {
+      openDialog(teamServiceId, serviceId, type, name, index, teamId, remainDay, serviceName) {
         this.dialog = true;
         this.teamServiceId = teamServiceId;
         this.serviceId = serviceId;
         this.type = type;
-        this.assignment = name;
+        this.dialogTitle = name;
         this.nowIndex = index;
         this.teamId = teamId;
         this.remainDay = remainDay;
         this.name = serviceName;
         this.secretKey();
       },
-      jumpPagea(URL, hasConsole, serviceId) {
+      jumpPage(URL, hasConsole, serviceId) {
         if (hasConsole === true) {
           window.location.href = "https://" + URL + ".easyapi.com/console/";
         } else {
@@ -240,48 +246,39 @@ export default {
         if (type == 2) {
           num = teamService.balance;
         } else if (type == 3) {
-          num = teamService.remainDay; 
+          num = teamService.remainDay;
         }
-        // let url = `http://localhost:8080/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
-        let url = `http:///team.easyapi.com/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
+        let url = `https:///team.easyapi.com/service/pay?type=${type}&serviceId=${serviceId}&serviceName=${name}&num=${num}`;
         let a = document.createElement("a");
         a.href = url;
         a.target = "_blank";
         a.click();
       },
-      getUserServices(newValue) {
-          let newCategory = newValue
-        this.$ajax.get(getUserService, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          params: {
-            serviceCategory:newCategory,
-            size: 50
-          }
-        }).then(res => {
-          res.data.content.map(item=>{
+      getUserServiceList(newValue) {
+        let newCategory = newValue;
+        let params = {
+          serviceCategory: newCategory,
+          size: 50
+        };
+        getUserServiceList(params).then(res => {
+          res.data.content.map(item => {
             let timestampLogin = new Date(item.teamService.endTime).getTime();
-            item.teamService.endTime = timestampLogin
-            if(item.teamService.endTime > this.currentTime){
-                item.teamService.remainDay = Math.floor((item.teamService.endTime - this.currentTime)/(1000*3600*24)) + 1
-            }else if(item.teamService.endTime <= this.currentTime){
-                item.teamService.remainDay = 0
+            item.teamService.endTime = timestampLogin;
+            if (item.teamService.endTime > this.currentTime) {
+              item.teamService.remainDay = Math.floor((item.teamService.endTime - this.currentTime) / (1000 * 3600 * 24)) + 1;
+            } else if (item.teamService.endTime <= this.currentTime) {
+              item.teamService.remainDay = 0;
             }
-          })
-          this.serviceList = res.data.content;  
-          this.name = this.serviceList[0].team.name
+          });
+          this.serviceList = res.data.content;
+          this.name = this.serviceList[0].team.name;
         }).catch(error => {
           console.log(error);
         });
       },
       //获取秘钥信息
       secretKey() {
-        this.$ajax.get(Surplus + "/" + this.teamServiceId, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }).then(res => {
+        getTeamService(this.teamServiceId).then(res => {
           this.formValidate.appKey = res.data.appKey;
           this.formValidate.appSecret = res.data.appSecret;
           this.balance = res.data.balance;
@@ -290,35 +287,37 @@ export default {
           console.log(error);
         });
       },
-      getCurrentTime(){    
+      getCurrentTime() {
         this.currentTime = new Date().getTime();
       }
     },
-    created(){
-		this.getCurrentTime();
-	},
-    mounted() {
-        this.getUserServices();
+    created() {
+      this.getCurrentTime();
     },
-    watch:{
-        category(newValue,oldValue){
-            this.getUserServices(newValue)  
-        }
+    mounted() {
+      this.getUserServiceList();
+    },
+    watch: {
+      category(newValue) {
+        this.getUserServiceList(newValue);
+      }
     }
-}
+  };
 </script>
 <style scoped>
-.region {
+  .region {
     width: 100%;
     height: auto;
     overflow: hidden;
   }
-.region_block {
+
+  .region_block {
     width: 300px;
     height: 150px;
     float: left;
     margin-top: 10px;
   }
+
   .service_box {
     width: 275px;
     height: 120px;
@@ -329,9 +328,11 @@ export default {
     position: relative;
     margin-top: 10px;
   }
+
   .service_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
+
   .service_box .information_img {
     width: 90%;
     height: 100%;
@@ -339,25 +340,30 @@ export default {
     padding-left: 20px;
     display: flex;
   }
+
   .service_box .information_fase {
     width: 65%;
     height: 100%;
     display: block;
     padding-left: 20px;
   }
-   .block {
+
+  .block {
     display: block;
     color: #999999;
   }
+
   .none {
     width: 10%;
     height: 30px;
     font-size: 18px;
     display: none;
   }
+
   .service_box:hover .none {
     display: block;
   }
+
   .ul_none {
     width: 100px;
     height: auto;
@@ -369,6 +375,7 @@ export default {
     top: 30px;
     padding: 0px;
   }
+
   .ul_none li {
     width: 100px;
     height: 34px;
@@ -377,23 +384,28 @@ export default {
     font-size: 14px;
     list-style-type: none;
   }
+
   .ul_none li:hover {
     background-color: #1bc1d6;
     color: #ffffff;
   }
+
   .none:hover .ul_none {
     display: block;
   }
-   .modal_dialog {
+
+  .modal_dialog {
     width: 100%;
     height: auto;
     display: flex;
   }
+
   .modal_dialog .modal_right {
     width: 17%;
     height: 500px;
     border-right: 1px solid #e5e5e5;
   }
+
   .modal_dialog .modal_right p {
     display: flex;
     width: 100%;
@@ -404,17 +416,21 @@ export default {
     color: #666666;
     cursor: pointer;
   }
+
   .modal_dialog .modal_right p:hover {
     color: #1bc1d6;
   }
+
   .state {
     color: #1bc1d6 !important;
   }
+
   .fl {
     display: block;
     width: 4px;
     height: 56px;
   }
+
   .f1 {
     width: 4px;
     height: 56px;
@@ -432,10 +448,12 @@ export default {
     width: 83%;
     height: auto;
   }
+
   .secret_key {
     width: 100%;
     height: auto;
   }
+
   .staff_member ul {
     width: 42px;
     height: 100%;
@@ -444,14 +462,17 @@ export default {
     font-size: 14px;
     color: #333;
   }
+
   .flk .ivu-modal-content {
     height: auto;
     background-color: #ffffff;
     box-shadow: 0px -2px 14px 0px rgba(0, 0, 0, 0.15);
   }
+
   .flk .ivu-modal-footer {
     display: none;
   }
+
   .flk .ivu-modal-header-inner {
     text-align: center;
     color: #333333;
@@ -479,6 +500,7 @@ export default {
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
   }
+
   .ivu-btn.active,
   .ivu-btn:active {
     border-color: #18d1c6 !important;
@@ -487,7 +509,8 @@ export default {
   .ivu-btn:hover {
     border-color: #18d1c6 !important;
   }
-   .market_box {
+
+  .market_box {
     width: 275px;
     height: 120px;
     background-color: #ffffff;
@@ -499,6 +522,7 @@ export default {
   .market_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
+
   .icon {
     width: 100%;
     height: 80px;
@@ -508,7 +532,8 @@ export default {
     color: #1cc0d6;
     display: block;
   }
-   .information_word {
+
+  .information_word {
     width: 100%;
     height: 40px;
     display: block;

@@ -56,7 +56,7 @@ yarn run lint
   ├── router                #路由配置
   ├── api
   │   ├── api.js            #API列表
-  │   └── fetch.js          #Ajax封装
+  │   └── request.js          #Ajax封装
   └── store                 #Vuex配置
 └── static                  #静态资源文件
   └── images                #图片

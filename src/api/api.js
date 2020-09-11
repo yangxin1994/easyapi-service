@@ -1,22 +1,32 @@
 export const baseUrl = "https://api2.easyapi.com";
+import axios from "axios";
 
-//获取用户服务列表
-export const getUserService = `${baseUrl}/console/user/services`;
+/**
+ * 获取我的余额提醒
+ **
+ * @see https://www.easyai.com
+ */
+export const getBalanceRemind = (serviceId) => axios.get(`${baseUrl}/console/balanceRemind/team/${serviceId}`);
 
-//接口统计
-export const interfaceStatistics = `${baseUrl}/console/serviceEveryday`;
+/**
+ * 获取余额提醒列表
+ **
+ * @see https://www.easyai.com
+ */
+export const getBalanceRemindList = (params) => axios.get(`${baseUrl}/console/balanceRemind`, { params: params });
 
-//团队服务详情 GET 获取秘钥信息GET
-export const Surplus = `${baseUrl}/console/teamService`;
 
-//获取我的余额提醒GET
-export const Reminding = `${baseUrl}/console/balanceRemind/team`;
+/**
+ * 修改余额提醒设置
+ **
+ * @see https://www.easyai.com
+ */
+export const updateBalanceRemind = (data) => axios.put(`${baseUrl}/console/serviceEveryday`, data);
 
-//修改余额提醒设置PUT
-export const modifyBalance = `${baseUrl}/console/balanceRemind`;
 
-//获取服务的成员列表GET 未加入服务的成员列表GET
-export const memberList = `${baseUrl}/console/service/`;
-
-//添加成员POST
-export const addMembers = `${baseUrl}/console/userService`;
+/**
+ * 获取每日统计
+ **
+ * @see https://www.easyai.com
+ */
+export const getServiceEveryday = (params) => axios.get(`${baseUrl}/console/serviceEveryday`, { params: params });

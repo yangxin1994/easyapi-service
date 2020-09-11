@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import ViewUI from "view-design";
-import axios from "./api/fetch";
+import axios from "./api/request";
 import moment from "moment";
 
 import "view-design/dist/styles/iview.css";

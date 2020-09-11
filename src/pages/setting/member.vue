@@ -75,14 +75,8 @@
 
 <script>
   import {
-    // getUserService,
-    // Surplus,
-    // Reminding,
-    memberList,
-    // modifyBalance,
-    addMembers
-  } from "../../api/api";
-  import Cookies from "js-cookie";
+    createUserService, getUnJoinUserList, getServiceUserList
+  } from "../../api/user-service";
 
   export default {
     name: "myMember",
@@ -114,18 +108,12 @@
       },
       //添加成员
       Sure() {
-        this.$ajax({
-          method: "POST",
-          url: addMembers,
-          headers: {
-            "Content-Type": "application/json"
-          },
-          params: {
-            userId: this.userId,
-            serviceId: this.serviceId,
-            teamServiceId: this.teamServiceId
-          }
-        }).then(res => {
+        let data = {
+          userId: this.userId,
+          serviceId: this.serviceId,
+          teamServiceId: this.teamServiceId
+        };
+        createUserService(data).then(res => {
           this.$Message.success(res.data.message);
           this.getMemberList();
           this.membersNotJoined();
@@ -151,11 +139,10 @@
       },
       //获取服务的成员列表
       getMemberList() {
-        this.$ajax.get(memberList + this.serviceId + "/users", {
-          params: {
-            size: 100
-          }
-        }).then(res => {
+        let params = {
+          size: 100
+        };
+        getServiceUserList(this.serviceId, params).then(res => {
           this.member = res.data.content.filter(item => {
             return item.type !== "创建人";
           });
@@ -168,7 +155,7 @@
       },
       //未加入服务的成员列表
       membersNotJoined() {
-        this.$ajax.get(memberList + this.serviceId + "/unJoinUsers").then(res => {
+        getUnJoinUserList(this.serviceId).then(res => {
           this.notAdded = res.data.content;
           this.code = res.data.code;
         }).catch(error => {
