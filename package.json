@@ -14,10 +14,10 @@
     "core-js": "^3.6.5",
     "highcharts": "^8.2.0",
     "js-cookie": "^2.2.1",
-    "moment": "^2.28.0",
+    "moment": "^2.29.0",
     "view-design": "^4.3.2",
     "vue": "^2.6.12",
-    "vue-router": "^3.4.3",
+    "vue-router": "^3.4.4",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
@@ -29,7 +29,7 @@
     "eslint": "^7.9.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
-    "prettier": "^2.1.1",
+    "prettier": "^2.1.2",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.12"
