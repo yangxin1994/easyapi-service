@@ -58,7 +58,6 @@
   import XChart from "../components/chart/highcharts";
   import { getServiceEveryday } from "../api/api";
   import { getUserServiceList } from "../api/user-service";
-  import Cookies from "js-cookie";
   import moment from "moment";
 
   export default {
@@ -69,7 +68,6 @@
         Switching: "最近7天",
         timeAndDate: "",
         seriesData: "",
-        authenticationToken: "",
         startDay: "", //开始时间
         endDay: "", //截止时间
         dayArr: [],
@@ -244,7 +242,6 @@
     },
     created() {
       this.serviceId = this.$route.query.serviceId;
-      this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
     }
   };
 </script>

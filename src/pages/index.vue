@@ -58,7 +58,6 @@
         defaultMemberNickname: "",
         defaultMemberType: "",
         tipsMember: "",
-        authenticationToken: "",
         startTime: "",
         isShow: false,
         changeKeyHint: false,

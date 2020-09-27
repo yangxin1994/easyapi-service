@@ -187,7 +187,6 @@
     font-size: 14px;
   }
 
-
   .white-list_ip {
     width: 100%;
     height: auto;

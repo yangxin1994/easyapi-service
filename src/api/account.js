@@ -1,6 +1,6 @@
 import { accountUrl } from "./api";
 
-import axios from "axios";
+import axios from "./request";
 
 
 /**

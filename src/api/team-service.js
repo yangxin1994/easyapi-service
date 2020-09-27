@@ -1,6 +1,6 @@
 import { serviceUrl } from "./api";
 
-import axios from "axios";
+import axios from "./request";
 
 
 /**
