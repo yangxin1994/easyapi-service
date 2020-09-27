@@ -32,7 +32,7 @@
           <li>(充值类业务如话费、油卡等，强烈建议绑定服务IP白名单)</li>
         </ul>
       </div>
-      <Button class="btn" @click="updateWhiteList">保存设置</Button>
+      <Button type="info" @click="updateWhiteList">保存设置</Button>
     </div>
   </div>
 </template>
@@ -143,7 +143,7 @@
   .white-list .title {
     width: 100%;
     height: 80px;
-    background-color: #fafafa;
+    background-color: #ecf1f5;
   }
 
   .white-list .title span {
@@ -212,15 +212,6 @@
     height: 200px;
     background-color: #ffffff;
     border-radius: 2px;
-  }
-
-  .btn {
-    width: 100px;
-    height: 34px;
-    background-color: #18c1d6;
-    color: #ffffff;
-    font-size: 14px;
-    margin-top: 20px;
   }
 
   .white-list-all {

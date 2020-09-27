@@ -59,6 +59,7 @@
   import { getServiceEveryday } from "../api/api";
   import { getUserServiceList } from "../api/user-service";
   import Cookies from "js-cookie";
+  import moment from "moment";
 
   export default {
     data() {
@@ -154,8 +155,8 @@
       //选择时间
       selectionDate(style, par) {
         this.Switching = style;
-        this.startDay = this.$moment(par[0]).format("YYYY-MM-DD");
-        this.endDay = this.$moment(par[1]).format("YYYY-MM-DD");
+        this.startDay = moment(par[0]).format("YYYY-MM-DD");
+        this.endDay = moment(par[1]).format("YYYY-MM-DD");
         this.getBetweenDateStr();
       },
       getBetweenDateStr() {

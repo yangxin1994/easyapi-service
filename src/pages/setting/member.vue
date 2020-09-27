@@ -75,7 +75,7 @@
 
 <script>
   import {
-    createUserService, getUnJoinUserList, getServiceUserList
+    createUserService, getUnJoinUserList, getServiceUserList, deleteUserService
   } from "../../api/user-service";
 
   export default {
@@ -86,7 +86,7 @@
         show: false,
         frame: false,
         nickname: "",
-        MemberId: "",
+        memberId: "",
         deleteModel: false,
         notAdded: [],
         member: [],
@@ -125,10 +125,10 @@
       //删除成员
       deleteMember(id) {
         this.deleteModel = true;
-        this.MemberId = id;
+        this.memberId = id;
       },
       prompt() {
-        this.$ajax.delete(addMembers + "/" + this.MemberId).then(res => {
+        deleteUserService(this.memberId).then(res => {
           this.$Message.success(res.data.message);
           this.getMemberList();
           this.membersNotJoined();

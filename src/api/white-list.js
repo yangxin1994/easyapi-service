@@ -1,4 +1,5 @@
-import { baseUrl } from "./api";
+import { serviceUrl } from "./api";
+
 import axios from "axios";
 
 /**
@@ -6,11 +7,11 @@ import axios from "axios";
  **
  * @see https://www.easyai.com
  */
-export const getWhiteList = () => axios.get(`${baseUrl}/console/whiteList/check`);
+export const getWhiteList = () => axios.get(`${serviceUrl}/console/whiteList/check`);
 
 /**
  * 修改白名单设置
  **
  * @see https://www.easyai.com
  */
-export const updateWhiteList = (data) => axios.put(`${baseUrl}/console/whiteList`, data);
+export const updateWhiteList = (data) => axios.put(`${serviceUrl}/console/whiteList`, data);

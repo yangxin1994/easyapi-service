@@ -47,11 +47,11 @@
 </template>
 
 <script>
-  import ServiceItem from "./moudles/item"
-  import {mapGetters} from 'vuex'
+  import ServiceItem from "./moudles/item";
+  import { mapGetters } from "vuex";
 
   export default {
-    components: { ServiceItem},
+    components: { ServiceItem },
     data() {
       return {
         defaultMemberImg: "",
@@ -71,10 +71,10 @@
         show: false,
         code: "",
         MemberId: "",
-        category:"",
+        category: "",
         titleSubscript: "",
         selectedPersonnel: "",
-        name:"",
+        name: ""
       };
     },
     methods: {
@@ -92,8 +92,8 @@
 
       //服务列表
       colorSwitching(category) {
-         this.category = category;
-      },
+        this.category = category;
+      }
     },
     created() {
     },
@@ -101,8 +101,8 @@
       document.title = "服务中心 - EasyAPI";
     },
     computed: {
-    ...mapGetters(['photo', 'team', 'teamName', 'teamImg', 'teamList'])
-  },
+      ...mapGetters(["photo", "team", "teamName", "teamImg", "teamList"])
+    }
 
   };
 </script>
@@ -111,15 +111,18 @@
     height: 100px;
     margin: 0px;
   }
+
   .row .ivu-tabs-mini .ivu-tabs-nav-container {
     padding-top: 60px;
     height: 100px;
   }
+
   .row .ivu-tabs-tab {
     width: 100px;
     font-size: 16px;
     text-align: center;
   }
+
   .row .ivu-tabs-ink-bar {
     background-color: #fff;
   }
@@ -129,12 +132,14 @@
     width: 100%;
     height: auto;
   }
+
   .mainPage .mainPage-title {
     width: 100%;
     height: 80px;
     background-color: #ecf1f5;
   }
- .mainPage .mainPage-title span {
+
+  .mainPage .mainPage-title span {
     width: 1200px;
     height: 80px;
     line-height: 80px;
@@ -143,17 +148,20 @@
     display: block;
     color: #333333;
   }
+
   .row {
     width: 1200px;
     height: auto;
     margin: 0 auto;
   }
+
   .configure {
     width: 100%;
     height: auto;
     margin-bottom: 50px;
   }
- .configure .configure_p {
+
+  .configure .configure_p {
     width: 100%;
     height: 50px;
     font-size: 18px;
@@ -162,6 +170,7 @@
     margin-top: 40px;
     border-bottom: 1px solid #e2e2e2;
   }
+
   .configure .configure_box {
     width: 275px;
     height: 235px;
@@ -170,9 +179,11 @@
     cursor: pointer;
     margin-top: 40px;
   }
+
   .configure .configure_box:hover {
     box-shadow: 0px 2px 7px 0px rgba(1, 1, 1, 0.1);
   }
+
   .configure .configure_box .configure_box_icon {
     display: block;
     width: 100%;
@@ -180,6 +191,7 @@
     height: 175px;
     text-align: center;
   }
+
   .colour {
     color: #1ac1d6 !important;
   }

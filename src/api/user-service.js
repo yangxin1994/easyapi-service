@@ -1,12 +1,14 @@
-import { baseUrl } from "./api";
+import { serviceUrl } from "./api";
+
 import axios from "axios";
+
 
 /**
  * 获取我的服务
  **
  * @see https://www.easyai.com
  */
-export const getUserServiceList = (params) => axios.get(`${baseUrl}/console/user/services`, { params: params });
+export const getUserServiceList = (params) => axios.get(`${serviceUrl}/console/user/services`, { params: params });
 
 
 /**
@@ -14,7 +16,7 @@ export const getUserServiceList = (params) => axios.get(`${baseUrl}/console/user
  **
  * @see https://www.easyai.com
  */
-export const getUnJoinUserList = (serviceId) => axios.get(`${baseUrl}/console/service/${serviceId}/unJoinUsers`, { params: serviceId });
+export const getUnJoinUserList = (serviceId) => axios.get(`${serviceUrl}/console/service/${serviceId}/unJoinUsers`, { params: serviceId });
 
 
 /**
@@ -22,7 +24,7 @@ export const getUnJoinUserList = (serviceId) => axios.get(`${baseUrl}/console/se
  **
  * @see https://www.easyai.com
  */
-export const getServiceUserList = (serviceId, params) => axios.get(`${baseUrl}/console/service/${serviceId}/users`, { params: params });
+export const getServiceUserList = (serviceId, params) => axios.get(`${serviceUrl}/console/service/${serviceId}/users`, { params: params });
 
 
 /**
@@ -30,7 +32,7 @@ export const getServiceUserList = (serviceId, params) => axios.get(`${baseUrl}/c
  **
  * @see https://www.easyai.com
  */
-export const createUserService = (data) => axios.post(`${baseUrl}/console/user-service`,data);
+export const createUserService = (data) => axios.post(`${serviceUrl}/console/user-service`, data);
 
 
 /**
@@ -38,4 +40,4 @@ export const createUserService = (data) => axios.post(`${baseUrl}/console/user-s
  **
  * @see https://www.easyai.com
  */
-export const deleteUserService = (id) => axios.delete(`${baseUrl}/console/user-service/${id}`,{params:id});
+export const deleteUserService = (id) => axios.delete(`${serviceUrl}/console/user-service/${id}`, { params: id });
