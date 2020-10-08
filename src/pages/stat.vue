@@ -54,7 +54,7 @@
 </template>
 <script>
   // 导入chart组件
-  var myvue = {};
+  let chart = {};
   import XChart from "../components/chart/highcharts";
   import { getServiceEveryday } from "../api/api";
   import { getUserServiceList } from "../api/user-service";
@@ -132,9 +132,7 @@
       },
       getItem() {
         for (let i = 0; i < this.item; i++) {
-          const ymd = new Date(new Date() - 24 * 60 * 60 * 1000 * i)
-            .toLocaleString()
-            .split(" ")[0];
+          const ymd = new Date(new Date() - 24 * 60 * 60 * 1000 * i).toLocaleString().split(" ")[0];
           const ymdarr = ymd.split("/");
           if (ymdarr[1] * 1 < 10) {
             ymdarr[1] = "0" + ymdarr[1];
@@ -207,8 +205,8 @@
               this.$set(this.data[0].data, i, this.statisticsTimes[i].count);
             }
           }
-          myvue.other.series = myvue.data; //数据
-          myvue.option = myvue.other;
+          chart.other.series = chart.data; //数据
+          chart.option = chart.other;
         }).catch(error => {
           console.log(error);
         });
@@ -231,7 +229,7 @@
       }
     },
     beforeCreate: function() {
-      myvue = this;
+      chart = this;
     },
     mounted: function() {
       this.getItem();

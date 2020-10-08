@@ -69,7 +69,7 @@
   } from "../../api/team-service";
 
   export default {
-    name: "mySecret",
+    name: "SettingSecret",
     props: ["formValidate"],
     data() {
       return {
@@ -97,7 +97,7 @@
     methods: {
       //点击复制
       copyAppKey() {
-        var clipboard = new Clipboard(".copy");
+        let clipboard = new Clipboard(".copy");
         clipboard.on("success", () => {
           this.$Message.success("复制成功");
           // 释放内存

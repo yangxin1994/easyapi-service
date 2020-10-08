@@ -86,7 +86,7 @@
   } from "../../api/user-service";
 
   export default {
-    name: "myBalance",
+    name: "SettingBalance",
     props: ["judgmentUnit", "balance", "remainDay", "type", "serviceId", "name"],
     data() {
       return {

@@ -79,7 +79,7 @@
   } from "../../api/user-service";
 
   export default {
-    name: "myMember",
+    name: "SettingMember",
     props: ["serviceId", "teamServiceId"],
     data() {
       return {

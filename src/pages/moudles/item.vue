@@ -156,34 +156,31 @@
         </div>
         <!--秘钥管理-->
         <div class="modal_left" v-if="nowIndex === 0">
-          <mySecret :formValidate="formValidate" :teamServiceId="teamServiceId"></mySecret>
+          <setting-balance :formValidate="formValidate" :teamServiceId="teamServiceId"></setting-balance>
         </div>
         <!--成员管理-->
         <div class="modal_left" v-if="nowIndex === 1">
-          <myMember :serviceId="serviceId" :teamServiceId="teamServiceId"></myMember>
+          <setting-member :serviceId="serviceId" :teamServiceId="teamServiceId"></setting-member>
         </div>
         <!--余额提醒-->
         <div class="modal_left" v-if="nowIndex === 2&this.type !== 1 && this.type !== 4">
-          <myBalance
+          <setting-balance
             :judgmentUnit="judgmentUnit"
             :balance="balance"
             :remainDay="remainDay"
             :type="type"
             :serviceId="serviceId"
             :name="name"
-          ></myBalance>
+          ></setting-balance>
         </div>
       </div>
     </Modal>
   </div>
 </template>
 <script>
-  import myMember from "../setting/member";
-  import myBalance from "../setting/balance";
-  import mySecret from "../setting/secret";
-  import {
-    Surplus
-  } from "../../api/api";
+  import SettingMember from "../setting/member";
+  import SettingBalance from "../setting/balance";
+  import SettingSecret from "../setting/secret";
   import {
     getUserServiceList
   } from "../../api/user-service";
@@ -193,7 +190,7 @@
 
   export default {
     props: ["category"],
-    components: { myMember, myBalance, mySecret },
+    components: { SettingMember, SettingBalance, SettingSecret },
     data() {
       return {
         dialogTitle: "秘钥管理",

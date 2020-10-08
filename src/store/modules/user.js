@@ -42,13 +42,13 @@ const user = {
     SET_TEAM: (state, team) => {
       state.team = team;
     },
-    SET_TEAMNAME: (state, teamName) => {
+    SET_TEAM_NAME: (state, teamName) => {
       state.teamName = teamName;
     },
-    SET_TEAMIMG: (state, teamImg) => {
+    SET_TEAM_IMG: (state, teamImg) => {
       state.teamImg = teamImg;
     },
-    SET_USERTEAM: (state, userTeam) => {
+    SET_USER_TEAM: (state, userTeam) => {
       state.userTeam = userTeam;
     },
     SET_TOKEN: (state, token) => {

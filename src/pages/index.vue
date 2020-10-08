@@ -28,7 +28,7 @@
           style="font-size: 18px;color: #999999;margin-left:45px;cursor: pointer"
         >数据服务</span>
       </div>
-      <ServiceItem :category="category"></ServiceItem>
+      <service-item :category="category"></service-item>
       <div class="configure">
         <p class="configure_p">
           <strong>配置</strong>
