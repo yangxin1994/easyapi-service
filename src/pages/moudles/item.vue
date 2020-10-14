@@ -156,7 +156,7 @@
         </div>
         <!--秘钥管理-->
         <div class="modal_left" v-if="nowIndex === 0">
-          <setting-balance :formValidate="formValidate" :teamServiceId="teamServiceId"></setting-balance>
+          <setting-secret :teamServiceId="teamServiceId"></setting-secret>
         </div>
         <!--成员管理-->
         <div class="modal_left" v-if="nowIndex === 1">
@@ -184,9 +184,7 @@
   import {
     getUserServiceList
   } from "../../api/user-service";
-  import {
-    getTeamService
-  } from "../../api/team-service";
+
 
   export default {
     props: ["category"],
@@ -194,7 +192,7 @@
     data() {
       return {
         dialogTitle: "秘钥管理",
-        nowIndex: 0,
+        nowIndex: null,
         dialog: false,
         serviceList: [],
         currentTime: "",
@@ -206,10 +204,6 @@
         teamId: "",
         remainDay: "",
         name: "",
-        formValidate: {
-          appKey: "",
-          appSecret: ""
-        }
       };
     },
     methods: {
@@ -227,7 +221,6 @@
         this.teamId = teamId;
         this.remainDay = remainDay;
         this.name = serviceName;
-        this.secretKey();
       },
       jumpPage(URL, hasConsole, serviceId) {
         if (hasConsole === true) {
@@ -251,10 +244,9 @@
         a.target = "_blank";
         a.click();
       },
-      getUserServiceList(newValue) {
-        let newCategory = newValue;
+      getUserServiceList(serviceCategory) {
         let params = {
-          serviceCategory: newCategory,
+          serviceCategory: serviceCategory,
           size: 50
         };
         getUserServiceList(params).then(res => {
@@ -273,17 +265,6 @@
           console.log(error);
         });
       },
-      //获取秘钥信息
-      secretKey() {
-        getTeamService(this.teamServiceId).then(res => {
-          this.formValidate.appKey = res.data.appKey;
-          this.formValidate.appSecret = res.data.appSecret;
-          this.balance = res.data.balance;
-          this.judgmentUnit = res.data.service.type;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
       getCurrentTime() {
         this.currentTime = new Date().getTime();
       }
@@ -295,8 +276,8 @@
       this.getUserServiceList();
     },
     watch: {
-      category(newValue) {
-        this.getUserServiceList(newValue);
+      category(serviceCategory) {
+        this.getUserServiceList(serviceCategory);
       }
     }
   };

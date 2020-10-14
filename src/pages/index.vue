@@ -9,22 +9,22 @@
       >
         <span
           :class="{ colour: category === '' }"
-          @click="colorSwitching('')"
+          @click="switchService('')"
           style="font-size: 18px;color: #999999;cursor: pointer"
         >全部</span>
         <span
           :class="{ colour: category === 1 }"
-          @click="colorSwitching(1)"
+          @click="switchService(1)"
           style="font-size: 18px;color: #999999;margin-left:45px;cursor: pointer"
         >接口服务</span>
         <span
           :class="{ colour: category === 2 }"
-          @click="colorSwitching(2)"
+          @click="switchService(2)"
           style="font-size: 18px;color: #999999;margin-left:45px;cursor: pointer"
         >场景服务</span>
         <span
           :class="{ colour: category === 3 }"
-          @click="colorSwitching(3)"
+          @click="switchService(3)"
           style="font-size: 18px;color: #999999;margin-left:45px;cursor: pointer"
         >数据服务</span>
       </div>
@@ -54,47 +54,24 @@
     components: { ServiceItem },
     data() {
       return {
-        defaultMemberImg: "",
-        defaultMemberNickname: "",
-        defaultMemberType: "",
-        tipsMember: "",
-        startTime: "",
-        isShow: false,
-        changeKeyHint: false,
-        serveType: null,
-        type: "",
-
-        balanceWarnNo: null,
-
-        userId: "",
-        show: false,
-        code: "",
-        MemberId: "",
-        category: "",
-        titleSubscript: "",
-        selectedPersonnel: "",
-        name: ""
+        category: ""
       };
     },
     methods: {
-      //跳转到白名单页面
+      /**
+       * 跳转到白名单页面
+       */
       jumpPage() {
         this.$router.push({ path: "/white-list" });
       },
-      //按月续费
-      // monthlyPage(serviceId, teamServiceId) {
-      //   this.$router.push({
-      //     path: "/renew/monthly",
-      //     query: { serviceId: serviceId, teamServiceId: teamServiceId }
-      //   });
-      // },
 
-      //服务列表
-      colorSwitching(category) {
+      /**
+       * 切换服务列表
+       * @param category
+       */
+      switchService(category) {
         this.category = category;
       }
-    },
-    created() {
     },
     mounted() {
       document.title = "服务中心 - EasyAPI";

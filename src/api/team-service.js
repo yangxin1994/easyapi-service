@@ -8,7 +8,7 @@ import axios from "./request";
  **
  * @see https://www.easyai.com
  */
-export const getTeamService = (id) => axios.get(`${serviceUrl}/console/team-service/${id}`, id);
+export const getTeamService = (id) => axios.get(`${serviceUrl}/console/team-service/${id}`);
 /**
  * 充值应用KEY和密钥
  **

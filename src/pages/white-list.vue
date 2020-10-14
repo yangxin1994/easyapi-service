@@ -94,7 +94,7 @@
         data.ips = this.IpWhiteListData;
         updateWhiteList(data).then(res => {
           this.$Message.success(res.data.message);
-          this.getMyServe();
+          this.getMyService();
           this.getWhiteList();
         }).catch(error => {
           this.$Message.error(error.data.message);

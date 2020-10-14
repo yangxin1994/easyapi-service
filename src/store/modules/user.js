@@ -18,10 +18,10 @@ const user = {
   },
 
   mutations: {
-    SET_ACCOUNTINFO: (state, accountInfo) => {
+    SET_ACCOUNT_INFO: (state, accountInfo) => {
       state.accountInfo = accountInfo;
     },
-    SET_USERID: (state, userId) => {
+    SET_USER_ID: (state, userId) => {
       state.userId = userId;
     },
     SET_USERNAME: (state, username) => {
@@ -62,8 +62,8 @@ const user = {
      */
     getUserInfo({ commit }) {
       getAccount().then(res => {
-        commit("SET_ACCOUNTINFO", res.data);
-        commit("SET_USERID", res.data.id);
+        commit("SET_ACCOUNT_INFO", res.data);
+        commit("SET_USER_ID", res.data.id);
         commit("SET_USERNAME", res.data.username);
         commit("SET_NICKNAME", res.data.nickname);
         commit("SET_PHOTO", res.data.photo);
@@ -71,10 +71,10 @@ const user = {
         commit("SET_EMAIL", res.data.email);
         if (res.data.team) {
           commit("SET_TEAM", res.data.team);
-          commit("SET_TEAMNAME", res.data.team.name);
-          commit("SET_TEAMIMG", res.data.team.img);
+          commit("SET_TEAM_NAME", res.data.team.name);
+          commit("SET_TEAM_IMG", res.data.team.img);
         }
-        commit("SET_USERTEAM", res.data.userTeam);
+        commit("SET_USER_TEAM", res.data.userTeam);
       }).catch(error => {
       });
     }

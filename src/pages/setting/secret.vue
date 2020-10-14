@@ -1,9 +1,9 @@
 <template>
   <div class="secret_key">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-      <FormItem label="AccessKey" prop="appKey" style="margin-top:20px;" class="fk">
+      <FormItem label="appKey" prop="appKey" style="margin-top:20px;" class="fk">
         <Input
-          placeholder="AccessKey"
+          placeholder="appKey"
           v-model="formValidate.appKey"
           disabled
           style="width: 300px;"
@@ -17,12 +17,12 @@
         >复制
         </button>
       </FormItem>
-      <FormItem label="SecretKey" prop="appSecret" class="fk">
+      <FormItem label="appSecret" prop="appSecret" class="fk">
         <Input
           :type="inputType"
           v-model="formValidate.appSecret"
           disabled
-          placeholder="SecretKey"
+          placeholder="appSecret"
           style="width:300px"
           class="copyContent"
         />
@@ -37,8 +37,8 @@
       </FormItem>
       <FormItem>
         <Button
-          style="background-color: #18c1d6;color: #fff;font-size: 14px;"
-          @click="modificationKey()"
+          type="info"
+          @click="showResetKey()"
         >更换秘钥
         </Button>
         <span style="display: block;margin-top:10px;color: #999999;font-size: 12px">此秘钥仅限于短信服务使用</span>
@@ -47,14 +47,14 @@
     </Form>
 
     <Modal
-      v-model="changeKeyHint"
+      v-model="resetKeyModal"
       title="温馨提示"
       @on-ok="ok"
       @on-cancel="cancel"
       :styles="{ top: '230px' }"
       width="350"
     >
-      <div class="changeKeyHint_box">
+      <div>
         <p>重置之后，以前的appKey和appSecret将不能正常使用，并且会导致以前的API调用失效。重置appKey和appSecret后，请及时将以前的接口调用中的参数进行更新。</p>
         <p>确认重置appKey和appSecret吗？</p>
       </div>
@@ -65,12 +65,12 @@
 <script>
   import Clipboard from "clipboard";
   import {
-    resetKey
+    resetKey, getTeamService
   } from "../../api/team-service";
 
   export default {
     name: "SettingSecret",
-    props: ["formValidate"],
+    props: ["teamServiceId"],
     data() {
       return {
         ruleValidate: {
@@ -89,17 +89,20 @@
             }
           ]
         },
+        formValidate: {
+          appKey: "",
+          appSecret: ""
+        },
         inputType: "password",
         btnContent: "显示",
-        changeKeyHint: false
+        resetKeyModal: false
       };
     },
     methods: {
-      //点击复制
       copyAppKey() {
         let clipboard = new Clipboard(".copy");
         clipboard.on("success", () => {
-          this.$Message.success("复制成功");
+          this.$Message.success("复制appKey成功");
           // 释放内存
           clipboard.destroy();
         });
@@ -111,9 +114,9 @@
         });
       },
       copyAppSecret() {
-        var clipboard = new Clipboard(".copy");
+        let clipboard = new Clipboard(".copy");
         clipboard.on("success", () => {
-          this.$Message.success("复制成功");
+          this.$Message.success("复制appSecret成功");
           // 释放内存
           clipboard.destroy();
         });
@@ -133,6 +136,15 @@
           this.btnContent = "显示";
         }
       },
+      //获取秘钥信息
+      secretKey() {
+        getTeamService(this.teamServiceId).then(res => {
+          this.formValidate.appKey = res.data.appKey;
+          this.formValidate.appSecret = res.data.appSecret;
+        }).catch(error => {
+          console.log(error);
+        });
+      },
       ok() {
         resetKey(this.teamServiceId).then(res => {
           this.formValidate.appKey = res.data.content.appKey;
@@ -144,12 +156,15 @@
         });
       },
       cancel() {
-        this.changeKeyHint = false;
+        this.resetKeyModal = false;
       },
       //修改秘钥
-      modificationKey() {
-        this.changeKeyHint = true;
+      showResetKey() {
+        this.resetKeyModal = true;
       }
+    },
+    created() {
+      this.secretKey();
     }
   };
 </script>
