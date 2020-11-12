@@ -59,7 +59,7 @@
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
             <a href="https://account.easyapi.com/notification/" target="_blank">我的通知</a>
             <a href="https://team.easyapi.com/user/edit" target="_blank">个人设置</a>
-            <a href="https://account.easyapi.com/logout">退出</a>
+            <a href="https://account.easyapi.com/logout?from=https://service.easyapi.com">退出</a>
           </div>
         </div>
       </div>
